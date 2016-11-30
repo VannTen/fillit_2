@@ -1,0 +1,22 @@
+Testing strlcat
+Refe 0 : bkjhkjhÇkjhkjh
+15
+Test 0 : bkjhkjhÇkjhkjh
+7
+Refe 1 : bkjhkjhÇkjhkjhdueiuÿ
+34
+Test 1 : bkjhkjhÇkjhkjhdueiuÿ
+19
+Refe 2 : bkjhkjhÇkjhkjhdueiuÿ
+29
+Test 2 : bkjhkjhÇkjhkjhdueiuÿ
+22
+Refe 3 : bkjhkjhÇkjhkjhdueiuÿ
+40
+Test 3 : bkjhkjhÇkjhkjhdueiuÿ
+22
+Refe 4 : bkjhkjhÇkjhkjhdueiuÿ
+20
+Test 4 : bkjhkjhÇkjhkjhdueiuÿ
+22
+End of test
