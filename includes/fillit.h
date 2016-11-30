@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/30 17:53:56 by mgautier          #+#    #+#             */
-/*   Updated: 2016/11/30 18:20:13 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/11/30 18:30:50 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,22 @@
 
 # include <stdlib.h>
 
-typedef struct	s_piece_part
+typedef struct			s_piece_part
 {
 	int x_index;
 	int y_index;
-}				t_piece_part;
-typedef struct	s_piece_origin
+}						t_piece_part;
+typedef struct			s_piece_origin
 {
 	size_t x_index;
 	size_t y_index;
-}				t_piece_origin;
-typedef struct	s_tetriminos
+}						t_piece_origin;
+typedef t_piece_origin	t_decalage;
+typedef struct			s_tetriminos
 {
-	t_point	relative_coordinates[3];
-	t_point decalage;
-	char	identifier;
-}				t_tetriminos;
+	t_piece_part	relative_coordinates[3];
+	t_decalage		decalage;
+	char			identifier;
+}						t_tetriminos;
 
 #endif
