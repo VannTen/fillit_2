@@ -6,12 +6,19 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 10:59:55 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/01 16:50:54 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/01 17:26:37 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "fillit.h"
+
+/*
+** ft_dup_point
+**
+** Duplicate (copy is allocated) a t_abs_position struct
+** It is initialized to 0 by ft_memalloc.
+*/
 
 static t_abs_position	*ft_dup_point(t_abs_position *dup_point)
 {
@@ -24,6 +31,14 @@ static t_abs_position	*ft_dup_point(t_abs_position *dup_point)
 	new_point->y = dup_point->y;
 	return (new_point);
 }
+
+/*
+** ft_absolute_positions
+**
+** Parse the two-dimensions array given as an entry to find 4 '#'.
+** Return their absolutes positions (considering array[0][0] as the origin)
+** inside an array of pointers of struct (t_abs_position)
+*/
 
 static t_abs_position	**ft_absolute_positions(char **piece_description)
 {
@@ -52,6 +67,21 @@ static t_abs_position	**ft_absolute_positions(char **piece_description)
 	}
 	return (positions);
 }
+
+/*
+** ft_free_rel, ft_free_abs
+**
+** These two functions (they are basically the same, except the type of
+** the argument) free the struct array which are allocated in the functions
+** ft_absolute_positions and ft_relative_positions.
+**
+** ft_free_abs will always be used at the end of ft_relative_positions, since
+** the absolute positions are not needed afterwards ; this is to prevent any
+** memory leaks.
+** On the other hand, ft_free_rel will only be used if there is an allocation
+** error : that will lead to properly exit the programm, and so freeing any
+** allocated memory.
+*/
 
 static void				ft_free_rel(t_rel_position ***p_positions)
 {
@@ -88,6 +118,18 @@ static void				ft_free_abs(t_abs_position ***p_positions)
 		*positions = NULL;
 	}
 }
+
+/*
+** ft_relative_positions
+**
+** This function is the entry and exit points for that file (others function
+** are static)
+** It computes three positions (t_rel_position) relative to the first '#'
+** of a tetriminos (the first being defined as the highest and leftmost one)
+**
+** The return value is the address of a struct array containing those, or NULL
+** if an error occured (allocation error)
+*/
 
 t_rel_position			**ft_relative_positions(char **piece_description)
 {
