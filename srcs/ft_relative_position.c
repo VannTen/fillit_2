@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_absative_position.c                             :+:      :+:    :+:   */
+/*   ft_relative_position.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 10:59:55 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/01 14:28:14 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/01 15:10:54 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_abs_position	**ft_absolute_positions(char **piece_description)
 		{
 			if (piece_description[point->y][point->x] == '#')
 			{
-				positions[index_positions] = ft_copy_point(point);
+				positions[index_positions] = ft_dup_point(point);
 				index_positions++;
 			}
 			point->x++;
@@ -43,3 +43,31 @@ static t_abs_position	**ft_absolute_positions(char **piece_description)
 	return (positions);
 }
 
+t_rel_position			**ft_relative_positions(char **piece_description)
+{
+	t_rel_position	**rel_positions;
+	t_abs_position	**abs_positions;
+	t_rel_position	origin;
+	size_t			index_positions;
+
+	abs_positions = ft_absolute_positions(piece_description);
+	rel_positions = (t_rel_position**)ft_memalloc(sizeof(t_rel_position) * 3);
+	if (rel_positions == NULL || abs_positions == NULL)
+	{
+		ft_free_positions(abs_positions);
+		ft_free_positions(rel_positions);
+		return (NULL);
+	}
+	origin.x = (int)abs_position[0]->x;
+	origin.y = (int)abs_position[0]->y;
+	while (index_positions < 4)
+	{
+		rel_positions[index_position - 1]->x =
+			(int)abs_positions[index_position]->x - origin.x;
+		rel_positions[index_position - 1]->y =
+			(int)abs_positions[index_position]->y - origin.y;
+		index_position++;
+	}
+	ft_free_positions(abs_positions);
+	return (rel_positions);
+}
