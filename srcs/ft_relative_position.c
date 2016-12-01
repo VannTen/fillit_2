@@ -1,48 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_relative_position.c                             :+:      :+:    :+:   */
+/*   ft_absative_position.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/01 10:59:55 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/01 12:32:41 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/01 14:28:14 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-t_piece_position	*ft_get_other_parts(char **piece, t_piece_origin *origin)
+static t_abs_position	*ft_dup_point(t_abs_position *point)
 {
-	size_t				index_relative;
-	t_piece_position	*relative;
-
-	while (index_relative < 3)
-	{
-		relative = ft_init_relative_position(0, 1);
-		if (piece[origin.y + relative.y][origin.x + relative.x] == '#'
-				&& !(ft_part_exists(relative, relative_array)))
-		{
-			relative_array[index_relative] = relative;
-			index_relative++;
-		}
-	}
+	return (ft_memdup(point, sizeof(t_abs_position)));
 }
-t_piece_part	*ft_relative_position(char **piece_description)
-{
-	t_piece_origin	first_point;
-	size_t			index_positions;
 
-	first_point.y = 0;
-	while (first_point.y < 4)
+static t_abs_position	**ft_absolute_positions(char **piece_description)
+{
+	t_abs_position	*point;
+	size_t			index_positions;
+	t_abs_position	**positions;
+
+	positions = (t_abs_position**)ft_memalloc(sizeof(t_abs_position*) * 4);
+	if (positions == NULL)
+		return (NULL);
+	index_positions = 0;
+	point->y = 0;
+	while (point->y < 4)
 	{
-		first_point.x = 0;
-		while (first_point.x < 4)
+		point->x = 0;
+		while (point->x < 4)
 		{
-			if (piece_description[first_point.y][first_point.x] == '#')
-				return (ft_get_other_parts(piece_description, &first_point));
-			first_point.x++;
+			if (piece_description[point->y][point->x] == '#')
+			{
+				positions[index_positions] = ft_copy_point(point);
+				index_positions++;
+			}
+			point->x++;
 		}
-		first_point.y++;
+		point->y++;
 	}
-	return (ERROR);
+	return (positions);
 }
 
