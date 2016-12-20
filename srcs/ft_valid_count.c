@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_file_reader.c                                   :+:      :+:    :+:   */
+/*   ft_valid_count.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 13:32:34 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/20 21:46:17 by chbechet         ###   ########.fr       */
+/*   Created: 2016/12/20 17:54:51 by chbechet          #+#    #+#             */
+/*   Updated: 2016/12/20 21:45:52 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <unistd.h>
-#define BUF_SIZE 20
-
-char		*ft_file_reader(const int fd)
+t_bool		ft_valid_count(char **piece)
 {
-	int		reader;
-	char	*buf;
+	int		point;
+	int		dieze;
+	int		back_n;
+	int		index;
 
-	buf = (char*)malloc(sizeof(char) * (BUF_SIZE + 1));
-	if (buf == NULL)
-		return (NULL);
-	reader = read(fd, buf, BUF_SIZE);
-	buf[reader] = '\0';
-	return (buf);
+	index = 0;
+	while (piece[index])
+	{
+		if (index == '.')
+			point++;
+		if (index == '#')
+			dieze++;
+		if (index == '\n')
+			back_n++;
+		if (point == 12 && dieze == 4 && back_n == 4)
+			return (TRUE);
+		else
+			return (FALSE);
+	}
 }
