@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_valid_count.c                                   :+:      :+:    :+:   */
+/*   ft_good_place_back_n.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/20 17:54:51 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/21 17:12:02 by chbechet         ###   ########.fr       */
+/*   Created: 2016/12/21 12:20:18 by chbechet          #+#    #+#             */
+/*   Updated: 2016/12/21 17:08:55 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool		ft_valid_count(char *piece)
+t_bool		ft_good_place_back_n(char *piece)
 {
-	int		point;
-	int		dieze;
-	int		back_n;
-	int		index;
+	int	index;
+	int	count;
 
 	index = 0;
-	dieze = 0;
-	back_n = 0;
-	point = 0;
+	count = 0;
 	while (piece[index])
 	{
-		if (index == '.')
-			point++;
-		else if (index == '#')
-			dieze++;
-		else if (index == '\n')
-			back_n++;
-		index++;
+		while (piece[index] != '\n')
+		{
+			index++;
+			count++;
+		}
+		if (piece[index] == '\n' && count != 4)
+			return (FALSE);
+		else
+		{
+			count = 0;
+			index++;
+		}
 	}
-	if (point == 12 && dieze == 4 && back_n == 4)
-		return (TRUE);
-	else
-		return (FALSE);
+	return (TRUE);
 }
