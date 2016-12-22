@@ -6,18 +6,18 @@
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:54:51 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/21 17:12:02 by chbechet         ###   ########.fr       */
+/*   Updated: 2016/12/21 20:19:25 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_bool		ft_valid_count(char *piece)
+t_bool		ft_valid_count(const char *piece)
 {
-	int		point;
-	int		dieze;
-	int		back_n;
-	int		index;
+	unsigned int		point;
+	unsigned int		dieze;
+	unsigned int		back_n;
+	unsigned int		index;
 
 	index = 0;
 	dieze = 0;
