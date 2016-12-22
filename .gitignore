@@ -6,3 +6,5 @@
 *~
 a.out
 fillit
+test_exe
+*.dSYM
