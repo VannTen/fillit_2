@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_file_reader.c                                   :+:      :+:    :+:   */
+/*   ft_piece_reader.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 13:32:34 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/21 20:50:28 by chbechet         ###   ########.fr       */
+/*   Updated: 2016/12/22 14:04:10 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <unistd.h>
 #define BUF_SIZE 20
 
-char		*ft_file_reader(const int fd)
+char		*ft_piece_reader(const int fd)
 {
 	int		reader;
 	char	*buf;
