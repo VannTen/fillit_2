@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_good_place_back_n.c                             :+:      :+:    :+:   */
+/*   ft_file_reader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/21 12:20:18 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/21 20:03:19 by chbechet         ###   ########.fr       */
+/*   Created: 2016/12/16 13:32:34 by chbechet          #+#    #+#             */
+/*   Updated: 2016/12/21 20:50:28 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
+#define BUF_SIZE 20
 
-t_bool		ft_good_place_back_n(const char *piece)
+char		*ft_file_reader(const int fd)
 {
-	unsigned int	index;
-	unsigned int	count;
+	int		reader;
+	char	*buf;
 
-	index = 0;
-	count = 0;
-	while (piece[index])
-	{
-		while (piece[index] != '\n')
-		{
-			index++;
-			count++;
-		}
-		if (piece[index] == '\n' && count != 4)
-			return (FALSE);
-		else
-		{
-			count = 0;
-			index++;
-		}
-	}
-	return (TRUE);
+	buf = (char*)malloc(sizeof(char) * (BUF_SIZE + 1));
+	if (buf == NULL)
+		return (NULL);
+	reader = read(fd, buf, BUF_SIZE);
+	buf[reader] = '\0';
+	return (buf);
 }

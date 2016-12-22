@@ -3,28 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_file_reader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/16 13:32:34 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/20 21:46:17 by chbechet         ###   ########.fr       */
+/*   Created: 2016/12/21 18:40:03 by chbechet          #+#    #+#             */
+/*   Updated: 2016/12/21 21:16:37 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <stdlib.h>
-#include <sys/types.h>
-#include <sys/uio.h>
-#include <unistd.h>
-#define BUF_SIZE 20
 
-char		*ft_file_reader(const int fd)
+t_fifo	*ft_file_reader(const int fd)
 {
-	int		reader;
-	char	*buf;
+	char	*piece;
+	char	separator;
+	int		oct_read;
+	t_fifo	*list;
 
-	buf = (char*)malloc(sizeof(char) * (BUF_SIZE + 1));
-	if (buf == NULL)
-		return (NULL);
-	reader = read(fd, buf, BUF_SIZE);
-	buf[reader] = '\0';
-	return (buf);
+	while (oct_read != 0)
+	{
+		list = f_create_fifo();
+		if (fifo == NULL)
+			return (NULL);
+		piece = ft_piece_reader(fd);
+		if (piece == NULL)
+			return (NULL);
+		if (f_add_fifo(piece) == NULL)
+			return (f_destroy_fifo(list, &ft_strdel));
+		oct_read = read(fd, &separator, 1);
+		if (oct_read == -1)
+			return (NULL);
+		if (separator != '\n')
+			return (f_destroy_fifo(list, &ft_strdel));
+	}
+	return (list);
 }
