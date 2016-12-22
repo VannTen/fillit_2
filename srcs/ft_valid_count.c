@@ -6,7 +6,7 @@
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/20 17:54:51 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/21 20:19:25 by chbechet         ###   ########.fr       */
+/*   Updated: 2016/12/22 18:55:54 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ t_bool		ft_valid_count(const char *piece)
 	dieze = 0;
 	back_n = 0;
 	point = 0;
-	while (piece[index])
+	while (piece[index] != '\0')
 	{
-		if (index == '.')
+		if (piece[index] == '.')
 			point++;
-		else if (index == '#')
+		else if (piece[index] == '#')
 			dieze++;
-		else if (index == '\n')
+		else if (piece[index] == '\n')
 			back_n++;
 		index++;
 	}
