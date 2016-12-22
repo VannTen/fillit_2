@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:40:03 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/22 14:18:36 by chbechet         ###   ########.fr       */
+/*   Updated: 2016/12/22 16:47:32 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ t_fifo	*ft_file_reader(const int fd)
 	t_fifo	*list;
 
 	oct_read = 1;
+	list = f_fifo_create();
+	if (list == NULL)
+		return (NULL);
 	while (oct_read != 0)
 	{
-		list = f_fifo_create();
-		if (list == NULL)
-			return (NULL);
 		piece = ft_piece_reader(fd);
 		if (piece == NULL)
 			return (NULL);
