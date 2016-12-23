@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_relative_position.h                             :+:      :+:    :+:   */
+/*   ft_string_to_coordinates.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/01 17:39:44 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/23 13:53:39 by mgautier         ###   ########.fr       */
+/*   Created: 2016/12/23 12:18:39 by mgautier          #+#    #+#             */
+/*   Updated: 2016/12/23 13:50:07 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_RELATIVE_POSITION_H
-# define FT_RELATIVE_POSITION_H
+#include "libft.h"
+#include "ft_relative_position.h"
 
-# include "fillit.h"
+t_rel_position	*ft_string_to_coordinates(char *str)
+{
+	char	**tab_lines;
 
-t_rel_position			*ft_relative_positions(char **piece_description);
-
-#endif
+	tab_lines = ft_strsplit(str, '\n');
+	return (ft_relative_positions(tab_lines));
+}
