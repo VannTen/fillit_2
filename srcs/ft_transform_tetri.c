@@ -6,49 +6,60 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 17:50:42 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/23 18:24:52 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/24 00:36:59 by                  ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include "libft.h"
 #include <stdlib.h>
 
 static t_offset	*ft_offset(const t_rel_position *coord)
 {
-	t_offset	*new;
-	size_t		index;
+		t_offset	*offset;
+		size_t		index;
 
-	new = (t_offset*)malloc(sizeof(t_offset));
-	if (new != NULL)
-	{
-		index = 0;
-		offset->x = 0;
-		offset->y = 0;
-		while (index < 3)
+		offset = (t_offset*)malloc(sizeof(t_offset));
+		if (offset != NULL)
 		{
-			if (offset->x < coord[index].x)
-				offset->x = coord[index].x;
-			if (offset->y < coord[indey].y)
-				offset->y = coord[indey].y;
-			index++;
+				index = 0;
+				offset->x = 0;
+				offset->y = 0;
+				while (index < 3)
+				{
+						if (offset->x < coord[index].x)
+								offset->x = coord[index].x;
+						if (offset->y < coord[index].y)
+								offset->y = coord[index].y;
+						index++;
+				}
 		}
-	}
-	return (new);
+		return (offset);
 }
 
-t_tetrimino		*ft_transform_in_tetris(const t_rel_position *coord,
-										const unsigned int index)
+t_tetrimino		*ft_transform_in_tetri(t_rel_position *coord,
+				const unsigned int index)
 {
-	t_tetrimino	*new;
+		t_tetrimino	*new;
 
-	new = (t_tetrimino*)malloc(sizeof(t_tetrimino));
-	if (new != NULL)
-	{
-		new->relative_coordinates = coord;
-		new->offset = ft_offset(coord);
-		if (new->offset == NULL)
-			return (NULL);
-		new->identifier = 'A' + index;
-	}
-	return (new);
+		new = (t_tetrimino*)malloc(sizeof(t_tetrimino));
+		if (new != NULL)
+		{
+				new->relative_coordinates = coord;
+				new->offset = ft_offset(coord);
+				if (new->offset == NULL)
+						return (NULL);
+				new->identifier = 'A' + index;
+		}
+		return (new);
+}
+
+t_lst			*ft_trans_tetri(t_lst *piece, unsigned int index)
+{
+		t_lst	*new_link;
+		new_link = f_lstnew(NULL);
+		if (new_link != NULL)
+				new_link->content =
+				ft_transform_in_tetri((t_rel_position*)piece->content, index);
+		return (new_link);
 }
