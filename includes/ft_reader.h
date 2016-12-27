@@ -6,7 +6,7 @@
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/22 13:58:33 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/26 15:35:20 by chbechet         ###   ########.fr       */
+/*   Updated: 2016/12/27 15:22:31 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,5 @@
 char	*ft_piece_reader(const int fd);
 t_fifo	*ft_file_reader(const int fd);
 t_bool	ft_valid_pieces_format(const t_lst *link);
-t_bool	ft_check_piece(const char *piece);
 
 #endif

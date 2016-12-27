@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 11:42:02 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/23 11:47:58 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/27 15:20:39 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,47 @@ static t_bool		ft_valid_count(const char *piece)
 		return (FALSE);
 }
 
+static unsigned int	ft_check_count(const char *piece)
+{
+	unsigned int index;
+	unsigned int count_touch;
+
+	index = 0;
+	count_touch = 0;
+	while (piece[index])
+	{
+		if (piece[index] == '#')
+		{
+			if (index + 1 <= 20 && piece[index + 1] == '#')
+				count_touch++;
+			if (index + 5 <= 20 && piece[index + 5] == '#')
+				count_touch++;
+			if (index >= 1 && piece[index - 1] == '#')
+				count_touch++;
+			if (index >= 5 && piece[index - 5] == '#')
+				count_touch++;
+		}
+		index++;
+	}
+	return (count_touch);
+}
+
+static t_bool		ft_check_shape(const char *piece)
+{
+	unsigned int touch;
+
+	touch = ft_check_count(piece);
+	if (touch == 6 || touch == 8)
+		return (TRUE);
+	else
+		return (FALSE);
+}
+
 t_bool				ft_valid_pieces_format(const t_lst *link)
 {
-	char *piece;
+	const char *piece;
 
-	piece = (char*)link->content;
-	return (ft_valid_count(piece) && ft_good_place_back_n(piece));
+	piece = (const char*)link->content;
+	return (ft_valid_count(piece) && ft_good_place_back_n(piece)
+			&& ft_check_shape(piece));
 }
