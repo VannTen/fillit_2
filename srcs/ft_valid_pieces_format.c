@@ -6,11 +6,18 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 11:42:02 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/27 15:20:39 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/27 20:20:03 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+/*
+** ft_good_place_back_n
+**
+** This function check if \n have good place in our file, if he's not the 
+** function return FALSE to notify we have wrong piece.
+*/
 
 static t_bool		ft_good_place_back_n(const char *piece)
 {
@@ -27,7 +34,7 @@ static t_bool		ft_good_place_back_n(const char *piece)
 			count++;
 		}
 		if (piece[index] == '\n' && count != 4)
-			return (FALSE);
+			return (FALSE)
 		else
 		{
 			count = 0;
@@ -36,6 +43,13 @@ static t_bool		ft_good_place_back_n(const char *piece)
 	}
 	return (TRUE);
 }
+
+/*
+** ft_valid_pieces_count
+**
+** This function check our piece, to be valided piece need twelve point
+** four dieze and four backslash on the other hand the piece is wrong.
+*/
 
 static t_bool		ft_valid_count(const char *piece)
 {
@@ -63,6 +77,13 @@ static t_bool		ft_valid_count(const char *piece)
 	else
 		return (FALSE);
 }
+/*
+** ft_check_count
+**
+** This function check if the tetriminos is correct, to do that 
+** the function look all '#' touch each other and they don't
+** teriminos is not correct.
+*/
 
 static unsigned int	ft_check_count(const char *piece)
 {
@@ -89,6 +110,14 @@ static unsigned int	ft_check_count(const char *piece)
 	return (count_touch);
 }
 
+/*
+** ft_check_shape
+**
+** This function check if tetriminos have a good shape, for check this
+** ft_check_shape call ft_check_count and compare the result to define 
+** if tetriminos is good.
+*/
+
 static t_bool		ft_check_shape(const char *piece)
 {
 	unsigned int touch;
@@ -99,6 +128,13 @@ static t_bool		ft_check_shape(const char *piece)
 	else
 		return (FALSE);
 }
+
+/*
+** ft_valid_pieces_format
+** 
+** This function call every other function on the top to check if
+** the piece is definitly good and can continu the process of fillit.
+*/
 
 t_bool				ft_valid_pieces_format(const t_lst *link)
 {
