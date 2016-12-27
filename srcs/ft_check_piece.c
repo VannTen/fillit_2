@@ -6,13 +6,13 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 14:28:01 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/26 15:22:16 by chbechet         ###   ########.fr       */
+/*   Updated: 2016/12/27 14:35:21 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-unsigned int	ft_check_count(const char *piece)
+static unsigned int	ft_check_count(const char *piece)
 {
 	unsigned int index;
 	unsigned int count_touch;
@@ -23,13 +23,13 @@ unsigned int	ft_check_count(const char *piece)
 	{
 		while (piece[index] == '#')
 		{
-			if (piece[index + 1] == '#')
+			if (index + 1 <= 20 && piece[index + 1] == '#')
 				count_touch++;
-			if (piece[index + 5] == '#')
+			if (index + 5 <= 20 && piece[index + 5] == '#')
 				count_touch++;
-			if (piece[index - 1] == '#')
+			if (index - 1 >= 0 && piece[index - 1] == '#')
 				count_touch++;
-			if (index >= 5 && piece[index - 5] == '#')
+			if (index - 5 >= 0 && piece[index - 5] == '#')
 				count_touch++;
 			index++;
 		}
