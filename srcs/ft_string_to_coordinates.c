@@ -6,17 +6,31 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 12:18:39 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/23 13:50:07 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/23 18:30:50 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "ft_relative_position.h"
+#include "fillit.h"
+#include "libft.h"
 
-t_rel_position	*ft_string_to_coordinates(char *str)
+static t_rel_position	*ft_string_to_coordinates(char *str)
 {
-	char	**tab_lines;
+	char			**tab_lines;
+	t_rel_position	*rel_positions;
 
 	tab_lines = ft_strsplit(str, '\n');
-	return (ft_relative_positions(tab_lines));
+	rel_positions = ft_relative_positions(tab_lines);
+	ft_free_string_array(&tab_lines);
+	return (rel_positions);
+}
+
+t_lst					*ft_transform_into_coord(t_lst *piece)
+{
+	t_lst *new_link;
+
+	new_link = f_lstnew(NULL);
+	if (new_link != NULL)
+		new_link->content = ft_string_to_coordinates((char*)piece->content);
+	return (new_link);
 }
