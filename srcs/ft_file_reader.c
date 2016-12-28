@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:40:03 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/27 16:58:32 by mgautier         ###   ########.fr       */
+/*   Updated: 2016/12/28 12:36:15 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ t_lst	*ft_file_reader(const int fd)
 		if (piece == NULL)
 			return (NULL);
 		if (f_fifo_add(fifo, piece) == NULL)
-			return ((t_lst*)f_fifo_destroy(&fifo, (void*)&ft_strdel));
+			return ((t_lst*)f_fifo_destroy(&fifo, &ft_strdel));
 		oct_read = read(fd, &separator, 1);
 		if (oct_read == -1)
 			return (NULL);
 		if (separator != '\n' && oct_read != 0)
-			return ((t_lst*)f_fifo_destroy(&fifo, (void*)&ft_strdel));
+			return ((t_lst*)f_fifo_destroy(&fifo, &ft_strdel));
 	}
 	return (fifo->begin_lst);
 }
