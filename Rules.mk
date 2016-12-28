@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/28 13:25:07 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/28 16:38:06 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -23,21 +23,16 @@ DIR := $(DIR)$(SUBDIR)
 include $(DIR)Srcs.mk
 
 # Give the full path to the locals directories (relative to top level Rules.mk)
+# add a slash only if necessary (alway adding a slash cause trouble in the top level
+# directory if subdirs are not defined (aka files are in DIR)
 
-define ADD_SLASH
-$(if $1_DIR
-	SRC_DIR += /
-endif
-endef
-SRC_LOCAL_DIR := $(DIR)$(SRC_DIR)/
-OBJ_LOCAL_DIR := $(DIR)$(OBJ_DIR)/
-DEP_LOCAL_DIR := $(DIR)$(DEP_DIR)/
-INC_LOCAL_DIR := $(DIR)$(INC_DIR)/
+$(foreach TYPE,SRC OBJ DEP INC,$(eval $(call ADD_SLASH,$(TYPE))))
 
 # Add the obj and dependency dir to the list of generated dir, which is also a clean
 # variables (for the remove directories rule)
 # only if they are different from the sub-project directory
 # That one obviously does not need to be created, and remove it would be trouble
+
 ifdef OBJ_DIR
 GENERATED_SUBDIRS += $(OBJ_LOCAL_DIR)
 endif

@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/28 12:08:27 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/28 16:33:21 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -74,7 +74,7 @@ endef
 %/Rules.mk: Rules.mk | %/Makefile
 	ln -f $< $@
 %/Makefile: Makefile
-	ln $< $@
+	ln -f $< $@
 
 .PRECIOUS: %/Makefile
 
@@ -86,6 +86,10 @@ endef
 
 define TARGET_ERROR
 $$(error $$(DIR) : No target if indicated for that directory))
+endef
+
+define ADD_SLASH
+$1_LOCAL_DIR := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
 endef
 
 # Clean-up variables
