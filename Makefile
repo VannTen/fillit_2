@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/27 18:46:18 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/28 12:08:27 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -30,6 +30,9 @@ DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
 
 COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 POSTCOMPILE = sed -E 's|([0-9a-z_.:]*/)?([0-9a-z_.:]+)|$$(DIR)\2|g' $(word 2,$^).tmp > $(word 2,$^)
+	
+MKDIR = mkdir
+RMDIR = rm -Rf
 
 # DIRECTORY TARGETS RECIPES
 
@@ -42,23 +45,8 @@ LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
 # These variables are used to obtain the .o and .dep files list
 # for each level of the projet, by using the current value of SRC.
 
-OBJ = $(patsubst %.c,$(DIR).%.o,$(SRC))
-DEP = $(patsubst %.c,$(DIR).%.dep,$(SRC))
-
-# These ones are used to expand the directories name into their path, relative to
-# the level of the make invocation
-
-OBJ_LOCAL_DIR = $(DIR)$(OBJ_DIR)
-DEP_LOCAL_DIR = $(DIR)$(DEP_DIR)
-INC_LOCAL_DIR = $(DIR)$(INC_DIR)
-
-# Clean-up variables
-# Collect all the files that need to be deleted along all the project tree
-# the clean-up rules then use them to do their job
-
-CLEAN :=
-FCLEAN :=
-MKCLEAN :=
+OBJ = $(patsubst %.c,$(OBJ_LOCAL_DIR)%.o,$(SRC))
+DEP = $(patsubst %.c,$(DEP_LOCAL_DIR)%.dep,$(SRC))
 
 # Compilation rule
 # Generate dependencies as a side effet
@@ -70,7 +58,7 @@ MKCLEAN :=
 %.o: %.c
 
 define	STATIC_OBJ_RULE
-$(OBJ_$(DIR)): $(OBJ_LOCAL_DIR)%.o: $(SRC_LOCAL_DIR)%.c $(DEP_LOCAL_DIR)%.dep
+$(OBJ_$(DIR)): $(OBJ_LOCAL_DIR)%.o: $(SRC_LOCAL_DIR)%.c $(DEP_LOCAL_DIR)%.dep | $(OBJ_LOCAL_DIR) $(DEP_LOCAL_DIR)
 	$$(COMPILE)
 	$$(POSTCOMPILE)
 	$$(RM) $$(word 2,$$^).tmp
@@ -86,13 +74,10 @@ endef
 %/Rules.mk: Rules.mk | %/Makefile
 	ln -f $< $@
 %/Makefile: Makefile
-	ln -f $< $@
+	ln $< $@
 
 .PRECIOUS: %/Makefile
 
-# Rule to create needed directories
-%/:
-	$(MKDIR) $@
 # Functions
 
 define INCLUDE_SUBDIRS
@@ -103,8 +88,20 @@ define TARGET_ERROR
 $$(error $$(DIR) : No target if indicated for that directory))
 endef
 
-DIR = 
+# Clean-up variables
+# Collect all the files that need to be deleted along all the project tree
+# the clean-up rules then use them to do their job
+
+CLEAN :=
+FCLEAN :=
+MKCLEAN :=
+
+GENERATED_SUBDIRS :=
+DIR := 
 include Rules.mk
+# Rule to create needed directories
+$(GENERATED_SUBDIRS):
+	$(MKDIR) $@
 
 # Mandatory rules
 # These are the rules which will be specified by the user as arguments to make
@@ -119,9 +116,12 @@ mkclean:
 
 fclean: clean
 	$(RM) $(FCLEAN)
+
+dirclean:
+	$(RMDIR) $(GENERATED_SUBDIRS)
 	
 mrproper: fclean mkclean
 
 re: fclean all
 
-.PHONY: debug all clean fclean mkclean re
+.PHONY: debug all clean fclean mkclean dirclean re

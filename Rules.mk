@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/27 19:02:52 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/28 13:25:07 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -21,6 +21,29 @@ DIR := $(DIR)$(SUBDIR)
 # Local sources files and target
 
 include $(DIR)Srcs.mk
+
+# Give the full path to the locals directories (relative to top level Rules.mk)
+
+define ADD_SLASH
+$(if $1_DIR
+	SRC_DIR += /
+endif
+endef
+SRC_LOCAL_DIR := $(DIR)$(SRC_DIR)/
+OBJ_LOCAL_DIR := $(DIR)$(OBJ_DIR)/
+DEP_LOCAL_DIR := $(DIR)$(DEP_DIR)/
+INC_LOCAL_DIR := $(DIR)$(INC_DIR)/
+
+# Add the obj and dependency dir to the list of generated dir, which is also a clean
+# variables (for the remove directories rule)
+# only if they are different from the sub-project directory
+# That one obviously does not need to be created, and remove it would be trouble
+ifdef OBJ_DIR
+GENERATED_SUBDIRS += $(OBJ_LOCAL_DIR)
+endif
+ifdef DEP_DIR
+GENERATED_SUBDIRS += $(DEP_LOCAL_DIR)
+endif
 
 # Standard expansion of the SRC into the local OBJ and DEP
 # + add them to clean-up variables
@@ -50,16 +73,17 @@ endif
 $(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(LIBRARY)
 	$(RECIPE)
 
+$(info $(STATIC_OBJ_RULE))
 $(eval $(STATIC_OBJ_RULE))
 
 # If the target is different from the one make is invoked in,
 # add it to the search path for headers.
 # If the target requiert a library, add its directory too.
 
-$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(INC_LOCAL_DIR)/
+$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(INC_LOCAL_DIR)
 
 ifdef LIBRARY
-$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(dir $(LIBRARY))
+$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(LIBRARY)
 endif
 
 # Clean variables 
@@ -78,7 +102,7 @@ endif
 
 # Inclusion of subdirs Rules.mk
 
-$(foreach SUBDIR,$(SUBDIRS),$(eval $(INCLUDE_SUBDIRS)))
+$(foreach SUBDIR,$(addsuffix /,$(SUBDIRS)),$(eval $(INCLUDE_SUBDIRS)))
 
 # Tracking current directory
 
