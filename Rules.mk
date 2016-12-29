@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/28 16:38:06 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/29 17:57:57 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -34,10 +34,10 @@ $(foreach TYPE,SRC OBJ DEP INC,$(eval $(call ADD_SLASH,$(TYPE))))
 # That one obviously does not need to be created, and remove it would be trouble
 
 ifdef OBJ_DIR
-GENERATED_SUBDIRS += $(OBJ_LOCAL_DIR)
+GENERATED_SUBDIRS += $(OBJ_DIR_$(DIR))
 endif
 ifdef DEP_DIR
-GENERATED_SUBDIRS += $(DEP_LOCAL_DIR)
+GENERATED_SUBDIRS += $(DEP_DIR_$(DIR))
 endif
 
 # Standard expansion of the SRC into the local OBJ and DEP
@@ -58,27 +58,29 @@ endif
 
 ifeq ($(suffix $(TARGET)),.a)
 $(TARGET_$(DIR)): RECIPE = $(LINK_STATIC_LIB)
+vpath $(TARGET) $(DIR)
+$(TARGET)_include := $(DIR)
 else
 $(TARGET_$(DIR)): RECIPE = $(LINK_EXE)
 endif
-
 
 # Local rules
 
 $(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(LIBRARY)
 	$(RECIPE)
 
-$(info $(STATIC_OBJ_RULE))
 $(eval $(STATIC_OBJ_RULE))
 
-# If the target is different from the one make is invoked in,
-# add it to the search path for headers.
+# Add the path for included files.
 # If the target requiert a library, add its directory too.
 
-$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(INC_LOCAL_DIR)
+$(TARGET_$(DIR)): CPPFLAGS_TGT := -iquote$(INC_DIR_$(DIR))
 
+$(info dir $(DIR) cible $(TARGET) lib $(LIBRARY)  lib include$($(LIBRARY)_include))
 ifdef LIBRARY
-$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(LIBRARY)
+$(info $(basename $(LIBRARY)))
+$(TARGET_$(DIR)): CPPFLAGS_TGT := $(CPPFLAGS_TGT) -iquote$(basename $(LIBRARY))
+$(warning test)
 endif
 
 # Clean variables 

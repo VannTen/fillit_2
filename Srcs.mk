@@ -6,7 +6,7 @@
 #    By: mgautier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/19 07:58:53 by mgautier          #+#    #+#              #
-#*   Updated: 2016/12/28 11:56:57 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/29 15:04:46 by mgautier         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ TEST_DIR := test
 
 # Dependencies
 
-LIBRARY := libft
+LIBRARY := libft.a
 OBJECTS :=
 ELSE :=
 

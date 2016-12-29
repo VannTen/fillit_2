@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/28 16:33:21 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/29 18:01:09 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -22,17 +22,19 @@ ifeq ($(SYSTEM),Linux)
 endif
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -ansi -pedantic-errors
+CFLAGS ?= -Wall -Wextra -Werror -ansi -pedantic-errors
 CFLAGS += $(CFLAGS_TGT)
-CPPFLAGS :=
+CPPFLAGS += $(CPPFLAGS_TGT)
+CPPFLAGS_TGT =
 
 DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
 
 COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-POSTCOMPILE = sed -E 's|([0-9a-z_.:]*/)?([0-9a-z_.:]+)|$$(DIR)\2|g' $(word 2,$^).tmp > $(word 2,$^)
+POSTCOMPILE = sed -E 's|([0-9a-z_.:]*/)?([0-9a-z_.:]+)|$$(DIR)\2|g' \
+	$$(word 2,$$^).tmp > $$(word 2,$$^)
 	
-MKDIR = mkdir
-RMDIR = rm -Rf
+MKDIR ?= mkdir
+RMDIR ?= rm -Rf
 
 # DIRECTORY TARGETS RECIPES
 
@@ -45,8 +47,8 @@ LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
 # These variables are used to obtain the .o and .dep files list
 # for each level of the projet, by using the current value of SRC.
 
-OBJ = $(patsubst %.c,$(OBJ_LOCAL_DIR)%.o,$(SRC))
-DEP = $(patsubst %.c,$(DEP_LOCAL_DIR)%.dep,$(SRC))
+OBJ = $(patsubst %.c,$(OBJ_DIR_$(DIR))%.o,$(SRC))
+DEP = $(patsubst %.c,$(DEP_DIR_$(DIR))%.dep,$(SRC))
 
 # Compilation rule
 # Generate dependencies as a side effet
@@ -58,9 +60,9 @@ DEP = $(patsubst %.c,$(DEP_LOCAL_DIR)%.dep,$(SRC))
 %.o: %.c
 
 define	STATIC_OBJ_RULE
-$(OBJ_$(DIR)): $(OBJ_LOCAL_DIR)%.o: $(SRC_LOCAL_DIR)%.c $(DEP_LOCAL_DIR)%.dep | $(OBJ_LOCAL_DIR) $(DEP_LOCAL_DIR)
+$(OBJ_$(DIR)): $(OBJ_DIR_$(DIR))%.o: $(SRC_DIR_$(DIR))%.c $(DEP_DIR_$(DIR))%.dep | $(OBJ_DIR_$(DIR)) $(DEP_DIR_$(DIR))
 	$$(COMPILE)
-	$$(POSTCOMPILE)
+	$(POSTCOMPILE)
 	$$(RM) $$(word 2,$$^).tmp
 	touch $$@
 endef
@@ -89,7 +91,7 @@ $$(error $$(DIR) : No target if indicated for that directory))
 endef
 
 define ADD_SLASH
-$1_LOCAL_DIR := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
+$1_DIR_$(DIR) := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
 endef
 
 # Clean-up variables
