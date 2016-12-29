@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/29 18:01:09 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/29 18:09:44 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -30,7 +30,7 @@ CPPFLAGS_TGT =
 DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
 
 COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-POSTCOMPILE = sed -E 's|([0-9a-z_.:]*/)?([0-9a-z_.:]+)|$$(DIR)\2|g' \
+POSTCOMPILE = sed -E 's|($(OBJ_DIR_$(DIR)))([0-9a-z_.:]+)|$$(DIR)\2|g' \
 	$$(word 2,$$^).tmp > $$(word 2,$$^)
 	
 MKDIR ?= mkdir

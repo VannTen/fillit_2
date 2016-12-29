@@ -6,7 +6,7 @@
 #    By: mgautier <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/19 07:58:53 by mgautier          #+#    #+#              #
-#*   Updated: 2016/12/29 15:04:46 by mgautier         ###   ########.fr       *#
+#*   Updated: 2016/12/29 18:09:11 by mgautier         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 # (Even if empty, DO NOT REMOVE any variable definition)
 
 TARGET := fillit
-SRC := ft_file_reader.c ft_parser.c ft_piece_reader.c ft_relative_position.c \
+SRC := ft_parser.c ft_file_reader.c ft_piece_reader.c ft_relative_position.c \
 	ft_string_to_coordinates.c ft_transform_tetri.c ft_valid_pieces_format.c
 
 # Directories
