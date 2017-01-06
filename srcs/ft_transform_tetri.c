@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 17:50:42 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/27 15:19:24 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/06 16:13:41 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,15 @@ static t_offset	*ft_offset(const t_rel_position *coord)
 		index = 0;
 		offset->x = 0;
 		offset->y = 0;
+		offset->minus_x = 0;
 		while (index < 3)
 		{
 			if (offset->x < coord[index].x)
 				offset->x = coord[index].x;
 			if (offset->y < coord[index].y)
 				offset->y = coord[index].y;
+			if (offset->minus_x > coord[index].x)
+				offset->minus_x = coord[index].x;
 			index++;
 		}
 	}
