@@ -6,33 +6,57 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/28 16:33:21 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/07 17:06:46 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
 .DEFAULT_GOAL:= all
+##
+## Externals programms
+##
+CC = gcc
+AR = ar
+MKDIR = mkdir
+RMDIR = rm -Rf
+SED = sed
+LN = ln -f
+TOUCH = touch
+##
+## Project specific variable
 
-# Build tools
+FILE_CHAR_RANGE := a-z0-9._
+
+# Extern variables (depending on build environnement)
 
 SYSTEM = $(shell uname)
-AR = ar 
-ARFLAGS = rc
-ifeq ($(SYSTEM),Linux)
-	ARFLAGS += -U
-endif
 
-CC = gcc
+##
+## Externals programms flags
+##
+
+# Compiler flags
 CFLAGS = -Wall -Wextra -Werror -ansi -pedantic-errors
 CFLAGS += $(CFLAGS_TGT)
-CPPFLAGS :=
 
+CPPFLAGS :=
 DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
 
 COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-POSTCOMPILE = sed -E 's|([0-9a-z_.:]*/)?([0-9a-z_.:]+)|$$(DIR)\2|g' $(word 2,$^).tmp > $(word 2,$^)
-	
-MKDIR = mkdir
-RMDIR = rm -Rf
+POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.o)|$$$$(OBJ_LOCAL_DIR)\1|g'\
+				-e 's|$(SRC_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.c)|$$$$(SRC_LOCAL_DIR)\1|g'\
+				-e 's|$(INC_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.h)|$$$$(INC_LOCAL_DIR)\1|g'\
+				-e 's|$(LIB_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.h)|$$$$(LIB_LOCAL_DIR)\1|g'\
+				$$(word 2,$$^).tmp > $$(word 2,$$^)
+
+# Archive maintainer flags
+ARFLAGS = rc
+ifeq ($(SYSTEM),Linux)
+ ARFLAGS += -U
+endif
+
+##
+## Tools
+##
 
 # DIRECTORY TARGETS RECIPES
 
@@ -59,10 +83,10 @@ DEP = $(patsubst %.c,$(DEP_LOCAL_DIR)%.dep,$(SRC))
 
 define	STATIC_OBJ_RULE
 $(OBJ_$(DIR)): $(OBJ_LOCAL_DIR)%.o: $(SRC_LOCAL_DIR)%.c $(DEP_LOCAL_DIR)%.dep | $(OBJ_LOCAL_DIR) $(DEP_LOCAL_DIR)
-	$$(COMPILE)
-	$$(POSTCOMPILE)
-	$$(RM) $$(word 2,$$^).tmp
-	touch $$@
+	$(QUIET) $$(COMPILE)
+	$(QUIET) $(POSTCOMPILE)
+	$(QUIET) $(RM) $$(word 2,$$^).tmp
+	$(QUIET) $(TOUCH) $$@
 endef
 
 %.dep: ;
@@ -72,9 +96,9 @@ endef
 # Rules to generate the needed Makefiles in the subdirectories and update them if necessary.
 
 %/Rules.mk: Rules.mk | %/Makefile
-	ln -f $< $@
+	$(QUIET) $(LN) $< $@
 %/Makefile: Makefile
-	ln -f $< $@
+	$(QUIET) $(LN) $< $@
 
 .PRECIOUS: %/Makefile
 

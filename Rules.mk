@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2016/12/28 16:38:06 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/07 15:14:13 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -66,7 +66,7 @@ endif
 # Local rules
 
 $(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(LIBRARY)
-	$(RECIPE)
+	$(QUIET) $(RECIPE)
 
 $(info $(STATIC_OBJ_RULE))
 $(eval $(STATIC_OBJ_RULE))
