@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/08 15:25:09 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/08 16:41:04 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -38,7 +38,7 @@ SYSTEM = $(shell uname)
 # Compiler flags
 CFLAGS := -Wall -Wextra -Werror -ansi -pedantic-errors
 
-CPPFLAGS :=
+CPPFLAGS += $(foreach INC_DIR,$(INC_DIRS),-iquote$(INC_DIR))
 DEPFLAGS = -MT $$@ -MP -MMD -MF $$(word 2,$$^).tmp
 
 # Archive maintainer flags
