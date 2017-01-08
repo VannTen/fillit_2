@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 17:09:11 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/08 15:41:34 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/08 16:19:04 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static t_bool	ft_try_every_position(t_resolution *array,
 static t_bool	ft_try_piece(t_resolution *array, int x, int y,
 								const t_lst *tetri)
 {
-	if (!ft_is_placable(array, x, y, tetri))
+	if (!ft_is_placable(array, x, y, (t_tetrimino*)tetri->content))
 		return (FALSE);
 	ft_add_tetri(array, x, y, (t_tetrimino*)tetri->content);
 	return (ft_try_every_position(array, tetri->next));
