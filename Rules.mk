@@ -6,32 +6,39 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/08 15:11:26 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/08 17:15:28 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
-#
-# set DIR to current directory, using SUBDIR, passed by the upper level Rules.mk
-# If that one is the top level, DIR is set to himself
-#
+##
+## Rules.mk
+## One instance of this file is included for every subdirectory of the project
+## which produces one target (directory that hold specific type of files, such
+## as source directory, includes directory, or objetc directory, aren't concerned
+##
 STACK_POINTER := $(STACK_POINTER).x
 DIR_$(STACK_POINTER) := $(DIR)
 DIR := $(DIR)$(SUBDIR)
 
-# Local sources files and target
+# Inlcudes Srcs.mk, which defines directory data (source files, target name,
+# additional dependencies, libraries needed)
+# Clean variables before, so we dont catch some from a previous dir
+# if there is a problem with Srcs.mk
 
+TARGET :=
+SRC :=
+ELSE :=
+LIBRARY :=
 include $(DIR)Srcs.mk
 
-# Give the full path to the locals directories (relative to top level Rules.mk)
+# Give the full path to the locals directories (by appending DIR before them)
 # add a slash only if necessary (alway adding a slash cause trouble in the top level
-# directory if subdirs are not defined (aka files are in DIR)
+# directory if subdirs are not defined (which means SRC_DIR (or another one)= DIR)
 
 $(foreach TYPE,SRC OBJ DEP INC,$(eval $(call ADD_SLASH,$(TYPE))))
 
-# Add the obj and dependency dir to the list of generated dir, which is also a clean
-# variables (for the remove directories rule)
-# only if they are different from the sub-project directory
-# That one obviously does not need to be created, and remove it would be trouble
+# Add the obj and dependency dir to the list of generated dir
+# only if they are different from the DIR (which is not generated)
 
 ifdef OBJ_DIR
 GENERATED_SUBDIRS += $(OBJ_LOCAL_DIR)
@@ -42,13 +49,17 @@ endif
 
 # Standard expansion of the SRC into the local OBJ and DEP
 # + add them to clean-up variables
-# + check if the target of this directory is indicated
 
 OBJ_$(DIR) := $(OBJ)
 DEP_$(DIR) := $(DEP)
 
+# + check if the target of this directory is indicated
+# If it is, a vpath directive allow rules that use that target
+# as a prerequisites to locate it easily
+
 ifdef TARGET
 TARGET_$(DIR) := $(DIR)$(TARGET)
+vpath $(TARGET) $(DIR)
 else
 $(eval $(TARGET_ERROR))
 endif
@@ -61,6 +72,7 @@ $(TARGET_$(DIR)): RECIPE = $(LINK_STATIC_LIB)
 else
 $(TARGET_$(DIR)): RECIPE = $(LINK_EXE)
 endif
+
 
 
 # Local rules
