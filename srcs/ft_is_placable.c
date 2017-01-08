@@ -6,13 +6,13 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:45:38 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/07 17:42:01 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/08 16:13:20 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "fillit.h"
-#include "solver.h"
+#include "solve_array.h"
 
 /*
 ** This function test if we place piece it's not overlap the other piece.
