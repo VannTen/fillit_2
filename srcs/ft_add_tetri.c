@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:09:47 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/08 12:03:48 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/08 15:43:45 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ft_add_tetri(char **tab, t_tetrimino *piece, int x, int y)
 
 	identifier = piece->identifier;
 	tab[x][y] = identifier;
-	coord = piece.relative_coordinates;
+	coord = piece->relative_coordinates;
 	index = 0;
 	while (index < 3)
 	{
