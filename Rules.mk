@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/07 15:14:13 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/08 15:11:26 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -68,7 +68,6 @@ endif
 $(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(LIBRARY)
 	$(QUIET) $(RECIPE)
 
-$(info $(STATIC_OBJ_RULE))
 $(eval $(STATIC_OBJ_RULE))
 
 # If the target is different from the one make is invoked in,

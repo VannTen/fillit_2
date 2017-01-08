@@ -6,11 +6,10 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/07 17:06:46 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/08 15:25:09 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
-.DEFAULT_GOAL:= all
 ##
 ## Externals programms
 ##
@@ -21,8 +20,10 @@ RMDIR = rm -Rf
 SED = sed
 LN = ln -f
 TOUCH = touch
+
 ##
 ## Project specific variable
+##
 
 FILE_CHAR_RANGE := a-z0-9._
 
@@ -35,18 +36,10 @@ SYSTEM = $(shell uname)
 ##
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -Werror -ansi -pedantic-errors
-CFLAGS += $(CFLAGS_TGT)
+CFLAGS := -Wall -Wextra -Werror -ansi -pedantic-errors
 
 CPPFLAGS :=
-DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
-
-COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.o)|$$$$(OBJ_LOCAL_DIR)\1|g'\
-				-e 's|$(SRC_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.c)|$$$$(SRC_LOCAL_DIR)\1|g'\
-				-e 's|$(INC_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.h)|$$$$(INC_LOCAL_DIR)\1|g'\
-				-e 's|$(LIB_LOCAL_DIR)([$(FILE_CHAR_RANGE)].+\.h)|$$$$(LIB_LOCAL_DIR)\1|g'\
-				$$(word 2,$$^).tmp > $$(word 2,$$^)
+DEPFLAGS = -MT $$@ -MP -MMD -MF $$(word 2,$$^).tmp
 
 # Archive maintainer flags
 ARFLAGS = rc
@@ -55,16 +48,29 @@ ifeq ($(SYSTEM),Linux)
 endif
 
 ##
-## Tools
+## Build tools
 ##
 
-# DIRECTORY TARGETS RECIPES
+# Object file compilation and dependency generation (as a side effect, see DEPFLAGS)
+COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $$@ $$<
 
-# Static libary maintainer
+# Post processing on depencency file (done after compilation) for relative path.
+POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.o\)|$$$$(OBJ_LOCAL_DIR)\1|g'\
+				-e 's|$(SRC_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.c\)|$$$$(SRC_LOCAL_DIR)\1|g'\
+				-e 's|$(INC_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.h\)|$$$$(INC_LOCAL_DIR)\1|g'\
+				-e 's|$(LIB_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.h\)|$$$$(LIB_LOCAL_DIR)\1|g'\
+				$$(word 2,$$^).tmp > $$(word 2,$$^)
+
+# Add objects files to archive (static library)
 LINK_STATIC_LIB = $(AR) $(ARFLAGS) $@ $?
 
-# Executable linker
+# Linker
 LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
+
+
+##
+## Macro variables
+##
 
 # These variables are used to obtain the .o and .dep files list
 # for each level of the projet, by using the current value of SRC.
@@ -72,18 +78,34 @@ LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
 OBJ = $(patsubst %.c,$(OBJ_LOCAL_DIR)%.o,$(SRC))
 DEP = $(patsubst %.c,$(DEP_LOCAL_DIR)%.dep,$(SRC))
 
-# Compilation rule
-# Generate dependencies as a side effet
-# Cancel implicit rule for objetc files
-# For each directory, create a static pattern rule (pattern rule applied only
-# to a precise set of targets) that search in the relevant directory for each
-# target and prerequisites.
+# Functions for handling directories and inclusion of submakefiles
+
+define INCLUDE_SUBDIRS
+include $(DIR)$(SUBDIR)Rules.mk
+endef
+
+define TARGET_ERROR
+$$(error $$(DIR) : No target if indicated for that directory))
+endef
+
+define ADD_SLASH
+$1_LOCAL_DIR := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
+endef
+
+##
+## Build rules
+##
+
+# Compilation rule for objects files (.o) from C source files (.c)
+# Generate dependencies files (.dep) as a side effet
+# That macro is used with eval in each subdirs to generate a static pattern rule
+# for the objects files in that directory
 
 %.o: %.c
 
 define	STATIC_OBJ_RULE
 $(OBJ_$(DIR)): $(OBJ_LOCAL_DIR)%.o: $(SRC_LOCAL_DIR)%.c $(DEP_LOCAL_DIR)%.dep | $(OBJ_LOCAL_DIR) $(DEP_LOCAL_DIR)
-	$(QUIET) $$(COMPILE)
+	$(QUIET) $(COMPILE)
 	$(QUIET) $(POSTCOMPILE)
 	$(QUIET) $(RM) $$(word 2,$$^).tmp
 	$(QUIET) $(TOUCH) $$@
@@ -102,39 +124,44 @@ endef
 
 .PRECIOUS: %/Makefile
 
-# Functions
+##
+## Collecting variables (filled during the parsing of the Makefile with relevant files)
+##
 
-define INCLUDE_SUBDIRS
-include $(DIR)$(SUBDIR)Rules.mk
-endef
-
-define TARGET_ERROR
-$$(error $$(DIR) : No target if indicated for that directory))
-endef
-
-define ADD_SLASH
-$1_LOCAL_DIR := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
-endef
-
-# Clean-up variables
-# Collect all the files that need to be deleted along all the project tree
-# the clean-up rules then use them to do their job
-
+# These three variables collect respectively : all object files, target files and depency files,
+# and submakefiles (that can be generated).
 CLEAN :=
 FCLEAN :=
 MKCLEAN :=
 
+# This variable collect all directory that are (or may be) created by make,
+# meaning object and dependency directories
 GENERATED_SUBDIRS :=
+
+##
+## Inclusion of subdirectories Makefiles (Rules.mk)
+##
+
+# Initialize the DIR variable, which tracks the directory whose make is parsing the Rules.mk
 DIR := 
+# Includes the local Rules.mk, which will include all the subdirectories Rules.mk
+# (It could eventually include itself, since the DIR is independant from the actual location
+# of Rules.mk)
 include Rules.mk
-# Rule to create needed directories
+
+# After having included all sub-Rules.mk, define the rules to create new directories if needed.
+# (the directories are order-only prerequisites on build rules)
 $(GENERATED_SUBDIRS):
 	$(MKDIR) $@
 
-# Mandatory rules
-# These are the rules which will be specified by the user as arguments to make
+##
+## Standard rules for users
+##
 
 all: $(TARGET_$(DIR))
+
+# Make sure the default target is always all
+.DEFAULT_GOAL:= all
 
 clean:
 	$(RM) $(CLEAN)
