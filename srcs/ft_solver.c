@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 17:09:11 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/07 18:42:45 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/08 11:59:39 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static t_bool	ft_try_piece(t_resolution *array, int x, int y,
 	return (ft_try_every_position(array, tetri->next));
 }
 
-char	**ft_solver(const t_lst *tetris_lst)
+char			**ft_solver(const t_lst *tetris_lst)
 {
 	t_resolution	*solve_tab;
 

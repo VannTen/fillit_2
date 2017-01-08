@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:37:45 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/07 18:41:54 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/08 12:03:07 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static size_t	ft_calculate_array_size(const t_lst *tetris_lst)
 	return (min_side);
 }
 
-char		**ft_generate_square(size_t side_length)
+char			**ft_generate_square(size_t side_length)
 {
 	char	**square;
 	size_t	index;
@@ -58,4 +58,3 @@ t_resolution	*ft_generate_struct_resolve(const t_lst *tetris_lst)
 	}
 	return (resolve);
 }
-

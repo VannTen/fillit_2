@@ -6,15 +6,15 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:41:03 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/07 18:41:41 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/08 12:00:28 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SOLVE_ARRAY_H
 # define SOLVE_ARRAY_H
 
-#include "fillit.h"
-#include "libft.h"
+# include "fillit.h"
+# include "libft.h"
 
 typedef struct		s_resolution
 {

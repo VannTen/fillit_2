@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 11:42:02 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/06 16:45:29 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/08 12:05:40 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ static t_bool		ft_valid_count(const char *piece)
 	else
 		return (FALSE);
 }
+
 /*
 ** ft_check_count
 **
