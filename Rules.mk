@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/08 17:15:28 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/09 16:32:30 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -25,10 +25,7 @@ DIR := $(DIR)$(SUBDIR)
 # Clean variables before, so we dont catch some from a previous dir
 # if there is a problem with Srcs.mk
 
-TARGET :=
-SRC :=
-ELSE :=
-LIBRARY :=
+$(foreach VARIABLE,$(EMPTY_SRCS.MK),$(eval $(VARIABLE) := ))
 include $(DIR)Srcs.mk
 
 # Give the full path to the locals directories (by appending DIR before them)
@@ -69,32 +66,36 @@ endif
 
 ifeq ($(suffix $(TARGET)),.a)
 $(TARGET_$(DIR)): RECIPE = $(LINK_STATIC_LIB)
+LIBPATH_INC += $(DIR)
+else ifeq ($(suffix $(TARGET)),.so)
+$(TARGET_$(DIR)): RECIPE = $(LINK_SHARED_LIB)
+LIBPATH_INC += $(DIR)
 else
 $(TARGET_$(DIR)): RECIPE = $(LINK_EXE)
 endif
 
-
-
 # Local rules
 
-$(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(LIBRARY)
+$(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(subst lib,-l,$(LIBRARY))
 	$(QUIET) $(RECIPE)
 
 $(eval $(STATIC_OBJ_RULE))
 
 # If the target is different from the one make is invoked in,
 # add it to the search path for headers.
-# If the target requiert a library, add its directory too.
+# If the target requiers a library, add its directory too.
 
-$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(INC_LOCAL_DIR)
+$(TARGET_$(DIR)): LIB_INCLUDES = $(LIBPATH_INC)
+$(TARGET_$(DIR)): INCLUDES := $(INC_LOCAL_DIR)
 
-ifdef LIBRARY
-$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(LIBRARY)
-endif
+#ifdef LIBRARY
+#$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(LIBRARY)
+#endif
 
 # Clean variables 
-# If this is the top level (the one where make is invoked) do add the Makefile
+# If this is not the top level (the one where make is invoked) do add the Makefile
 # and the Rules.mk files to MKCLEAN
+# That way, we're sure that not all Makfiles can be erased.
 
 CLEAN += $(OBJ_$(DIR))
 FCLEAN += $(TARGET_$(DIR)) $(DEP_$(DIR))

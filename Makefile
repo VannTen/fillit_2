@@ -6,10 +6,11 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/08 16:41:04 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/09 16:30:04 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
+$(info Begin Makefile parsing...)
 ##
 ## Externals programms
 ##
@@ -20,6 +21,7 @@ RMDIR = rm -Rf
 SED = sed
 LN = ln -f
 TOUCH = touch
+RANLIB = ranlib
 
 ##
 ## Project specific variable
@@ -38,7 +40,8 @@ SYSTEM = $(shell uname)
 # Compiler flags
 CFLAGS := -Wall -Wextra -Werror -ansi -pedantic-errors
 
-CPPFLAGS += $(foreach INC_DIR,$(INC_DIRS),-iquote$(INC_DIR))
+CPPFLAGS += $$(foreach INC_DIR,$$(LIB_INCLUDES),-iquote$$(INC_DIR))
+CPPFLAGS += -iquote$$(INCLUDES)
 DEPFLAGS = -MT $$@ -MP -MMD -MF $$(word 2,$$^).tmp
 
 # Archive maintainer flags
@@ -62,8 +65,10 @@ POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.o\)|$$$$(OBJ
 				$$(word 2,$$^).tmp > $$(word 2,$$^)
 
 # Add objects files to archive (static library)
-LINK_STATIC_LIB = $(AR) $(ARFLAGS) $@ $?
-
+define LINK_STATIC_LIB
+$(AR) $(ARFLAGS) $@ $?
+$(RANLIB) $@
+endef
 # Linker
 LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
 
@@ -92,6 +97,19 @@ define ADD_SLASH
 $1_LOCAL_DIR := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
 endef
 
+# Assure a clean state before computing rules in a subdir
+EMPTY_SRCS.MK := TARGET \
+ SRC \
+ LIBRARY \
+ OBJECTS \
+ ELSE \
+ SRC_DIR \
+ INC_DIR \
+ OBJ_DIR \
+ DEP_DIR \
+ TEST_DIR \
+ SUBDIRS 
+
 ##
 ## Build rules
 ##
@@ -118,9 +136,9 @@ endef
 # Rules to generate the needed Makefiles in the subdirectories and update them if necessary.
 
 %/Rules.mk: Rules.mk | %/Makefile
-	$(QUIET) $(LN) $< $@
+	+$(QUIET) $(LN) $< $@
 %/Makefile: Makefile
-	$(QUIET) $(LN) $< $@
+	+$(QUIET) $(LN) $< $@
 
 .PRECIOUS: %/Makefile
 
@@ -138,6 +156,10 @@ MKCLEAN :=
 # meaning object and dependency directories
 GENERATED_SUBDIRS :=
 
+#
+# This one collect the paths for library headers, required for object files compilation
+
+LIBPATH_INC :=
 ##
 ## Inclusion of subdirectories Makefiles (Rules.mk)
 ##
@@ -152,7 +174,7 @@ include Rules.mk
 # After having included all sub-Rules.mk, define the rules to create new directories if needed.
 # (the directories are order-only prerequisites on build rules)
 $(GENERATED_SUBDIRS):
-	$(MKDIR) $@
+	+$(MKDIR) $@
 
 ##
 ## Standard rules for users
@@ -180,3 +202,8 @@ mrproper: fclean mkclean
 re: fclean all
 
 .PHONY: debug all clean fclean mkclean dirclean re
+
+# This is for be sure that the top level directory does not count
+# on the last value of DIR (the directory from where make is invoked)
+DIR := THIS_IS_A_BUG	
+$(info End of parsing)
