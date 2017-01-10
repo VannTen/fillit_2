@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/09 16:30:04 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/10 15:44:44 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -40,9 +40,8 @@ SYSTEM = $(shell uname)
 # Compiler flags
 CFLAGS := -Wall -Wextra -Werror -ansi -pedantic-errors
 
-CPPFLAGS += $$(foreach INC_DIR,$$(LIB_INCLUDES),-iquote$$(INC_DIR))
-CPPFLAGS += -iquote$$(INCLUDES)
-DEPFLAGS = -MT $$@ -MP -MMD -MF $$(word 2,$$^).tmp
+CPPFLAGS += -iquote$(INCLUDE) $(foreach INC_LIB,$(LIB_INCLUDES),-iquote$(INC_LIB))
+DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
 
 # Archive maintainer flags
 ARFLAGS = rc
@@ -55,14 +54,14 @@ endif
 ##
 
 # Object file compilation and dependency generation (as a side effect, see DEPFLAGS)
-COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $$@ $$<
+COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 # Post processing on depencency file (done after compilation) for relative path.
-POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.o\)|$$$$(OBJ_LOCAL_DIR)\1|g'\
-				-e 's|$(SRC_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.c\)|$$$$(SRC_LOCAL_DIR)\1|g'\
-				-e 's|$(INC_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.h\)|$$$$(INC_LOCAL_DIR)\1|g'\
-				-e 's|$(LIB_LOCAL_DIR)\([$(FILE_CHAR_RANGE)]*\.h\)|$$$$(LIB_LOCAL_DIR)\1|g'\
-				$$(word 2,$$^).tmp > $$(word 2,$$^)
+POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.o\)|$$(OBJ_LOCAL_$(DIR))\1|g'\
+				-e 's|$(SRC_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.c\)|$$(SRC_LOCAL_$(DIR))\1|g'\
+				-e 's|$(INC_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.h\)|$$(INC_LOCAL_$(DIR))\1|g'\
+				$(foreach LIB,$(LIB_INCLUDES),-e 's|$$($$(LIB)_PATH)\([$(FILE_CHAR_RANGE)]*\.h\)|$$$$($$(LIB)_PATH)\1|g')\
+				$(word 2,$^).tmp > $(word 2,$^)
 
 # Add objects files to archive (static library)
 define LINK_STATIC_LIB
@@ -80,8 +79,8 @@ LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
 # These variables are used to obtain the .o and .dep files list
 # for each level of the projet, by using the current value of SRC.
 
-OBJ = $(patsubst %.c,$(OBJ_LOCAL_DIR)%.o,$(SRC))
-DEP = $(patsubst %.c,$(DEP_LOCAL_DIR)%.dep,$(SRC))
+OBJ = $(patsubst %.c,$(OBJ_LOCAL_$(DIR))%.o,$(SRC))
+DEP = $(patsubst %.c,$(DEP_LOCAL_$(DIR))%.dep,$(SRC))
 
 # Functions for handling directories and inclusion of submakefiles
 
@@ -94,13 +93,13 @@ $$(error $$(DIR) : No target if indicated for that directory))
 endef
 
 define ADD_SLASH
-$1_LOCAL_DIR := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
+$1_LOCAL_$(DIR) := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
 endef
 
 # Assure a clean state before computing rules in a subdir
 EMPTY_SRCS.MK := TARGET \
  SRC \
- LIBRARY \
+ LIBRARIES \
  OBJECTS \
  ELSE \
  SRC_DIR \
@@ -122,11 +121,12 @@ EMPTY_SRCS.MK := TARGET \
 %.o: %.c
 
 define	STATIC_OBJ_RULE
-$(OBJ_$(DIR)): $(OBJ_LOCAL_DIR)%.o: $(SRC_LOCAL_DIR)%.c $(DEP_LOCAL_DIR)%.dep | $(OBJ_LOCAL_DIR) $(DEP_LOCAL_DIR)
-	$(QUIET) $(COMPILE)
-	$(QUIET) $(POSTCOMPILE)
+$(OBJ_$(DIR)): $(OBJ_LOCAL_$(DIR))%.o: $(SRC_LOCAL_$(DIR))%.c $(DEP_LOCAL_$(DIR))%.dep | $(OBJ_LOCAL_$(DIR)) $(DEP_LOCAL_$(DIR))
+	$(QUIET) $$(COMPILE)
+	$(QUIET) $$(POSTCOMPILE)
 	$(QUIET) $(RM) $$(word 2,$$^).tmp
 	$(QUIET) $(TOUCH) $$@
+	$$(info $$(LIB_INCLUDES))
 endef
 
 %.dep: ;

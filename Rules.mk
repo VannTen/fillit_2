@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/09 16:32:30 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/10 15:57:34 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -25,7 +25,7 @@ DIR := $(DIR)$(SUBDIR)
 # Clean variables before, so we dont catch some from a previous dir
 # if there is a problem with Srcs.mk
 
-$(foreach VARIABLE,$(EMPTY_SRCS.MK),$(eval $(VARIABLE) := ))
+$(foreach VARIABLE,$(EMPTY_SRCS.MK),$(eval $(VARIABLE):= ))
 include $(DIR)Srcs.mk
 
 # Give the full path to the locals directories (by appending DIR before them)
@@ -57,6 +57,7 @@ DEP_$(DIR) := $(DEP)
 ifdef TARGET
 TARGET_$(DIR) := $(DIR)$(TARGET)
 vpath $(TARGET) $(DIR)
+$(basename $(TARGET))_PATH := $(DIR)
 else
 $(eval $(TARGET_ERROR))
 endif
@@ -76,7 +77,7 @@ endif
 
 # Local rules
 
-$(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(subst lib,-l,$(LIBRARY))
+$(TARGET_$(DIR)): $(OBJ_$(DIR)) $(ELSE) $(subst lib,-l,$(LIBRARIES))
 	$(QUIET) $(RECIPE)
 
 $(eval $(STATIC_OBJ_RULE))
@@ -85,12 +86,13 @@ $(eval $(STATIC_OBJ_RULE))
 # add it to the search path for headers.
 # If the target requiers a library, add its directory too.
 
-$(TARGET_$(DIR)): LIB_INCLUDES = $(LIBPATH_INC)
-$(TARGET_$(DIR)): INCLUDES := $(INC_LOCAL_DIR)
+$(TARGET_$(DIR)): DIR := $(DIR)
+$(TARGET_$(DIR)): INCLUDE := $(INC_LOCAL_$(DIR))
 
-#ifdef LIBRARY
-#$(TARGET_$(DIR)): CPPFLAGS := $(CPPFLAGS) -iquote$(LIBRARY)
-#endif
+ifdef LIBRARIES
+$(DIR)_LIBS := $(LIBRARIES)
+$(TARGET_$(DIR)): LIB_INCLUDES = $(foreach XXX,$($(DIR)_LIBS),$($(XXX)_PATH))
+endif
 
 # Clean variables 
 # If this is not the top level (the one where make is invoked) do add the Makefile
