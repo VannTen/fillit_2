@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/10 17:16:09 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/10 18:12:01 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -38,10 +38,10 @@ $(foreach TYPE,SRC OBJ DEP INC,$(eval $(call ADD_SLASH,$(TYPE))))
 # only if they are different from the DIR (which is not generated)
 
 ifdef OBJ_DIR
-GENERATED_SUBDIRS += $(OBJ_LOCAL_DIR)
+GENERATED_SUBDIRS += $(OBJ_LOCAL_$(DIR))
 endif
 ifdef DEP_DIR
-GENERATED_SUBDIRS += $(DEP_LOCAL_DIR)
+GENERATED_SUBDIRS += $(DEP_LOCAL_$(DIR))
 endif
 
 # Standard expansion of the SRC into the local OBJ and DEP
@@ -107,7 +107,7 @@ endif
 
 # Inclusion of depency files (auto-generated)
 
-DEPENCENDY_FILES+= $(DEP_$(DIR))
+DEP_FILES+= $(DEP_$(DIR))
 
 # Inclusion of subdirs Rules.mk
 

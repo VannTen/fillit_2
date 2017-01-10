@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/10 17:15:58 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/10 18:11:14 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -166,12 +166,12 @@ LIBPATH_INC :=
 
 # Initialize the DIR variable, which tracks the directory whose make is parsing the Rules.mk
 DIR := 
-DEPENDENIES_FILES :=
+DEP_FILES :=
 # Includes the local Rules.mk, which will include all the subdirectories Rules.mk
 # (It could eventually include itself, since the DIR is independant from the actual location
 # of Rules.mk)
 include Rules.mk
--include $(DEPENDENIES_FILES)
+-include $(DEP_FILES)
 
 # After having included all sub-Rules.mk, define the rules to create new directories if needed.
 # (the directories are order-only prerequisites on build rules)
