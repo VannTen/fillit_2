@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/12/13 19:41:31 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/10 15:57:34 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/10 17:16:09 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -107,7 +107,7 @@ endif
 
 # Inclusion of depency files (auto-generated)
 
--include $(DEP_$(DIR))
+DEPENCENDY_FILES+= $(DEP_$(DIR))
 
 # Inclusion of subdirs Rules.mk
 

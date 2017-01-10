@@ -6,7 +6,7 @@
 #*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
 #*                                                +#+#+#+#+#+   +#+           *#
 #*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/10 15:44:44 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/10 17:15:58 by mgautier         ###   ########.fr       *#
 #*                                                                            *#
 #* ************************************************************************** *#
 
@@ -60,7 +60,7 @@ COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 POSTCOMPILE = $(SED) -e 's|$(OBJ_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.o\)|$$(OBJ_LOCAL_$(DIR))\1|g'\
 				-e 's|$(SRC_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.c\)|$$(SRC_LOCAL_$(DIR))\1|g'\
 				-e 's|$(INC_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.h\)|$$(INC_LOCAL_$(DIR))\1|g'\
-				$(foreach LIB,$(LIB_INCLUDES),-e 's|$$($$(LIB)_PATH)\([$(FILE_CHAR_RANGE)]*\.h\)|$$$$($$(LIB)_PATH)\1|g')\
+				$(foreach LIB,$($(DIR)_LIBS),-e 's|$($(LIB)_PATH)\([$(FILE_CHAR_RANGE)]*\.h\)|$$($(LIB)_PATH)\1|g')\
 				$(word 2,$^).tmp > $(word 2,$^)
 
 # Add objects files to archive (static library)
@@ -166,10 +166,12 @@ LIBPATH_INC :=
 
 # Initialize the DIR variable, which tracks the directory whose make is parsing the Rules.mk
 DIR := 
+DEPENDENIES_FILES :=
 # Includes the local Rules.mk, which will include all the subdirectories Rules.mk
 # (It could eventually include itself, since the DIR is independant from the actual location
 # of Rules.mk)
 include Rules.mk
+-include $(DEPENDENIES_FILES)
 
 # After having included all sub-Rules.mk, define the rules to create new directories if needed.
 # (the directories are order-only prerequisites on build rules)
