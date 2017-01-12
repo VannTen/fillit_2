@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:37:45 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/12 18:11:15 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 21:51:55 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static size_t	ft_calculate_array_size(const t_lst *tetris_lst)
 	size_t	min_side;
 
 	number_of_pieces = f_lst_len(tetris_lst);
-	min_side = ft_int_square_root(number_of_pieces * 4) + 1;
+	min_side = ft_square_root_round_up(number_of_pieces * 4);
 	return (min_side);
 }
 
