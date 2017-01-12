@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 18:41:03 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/08 12:00:28 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 15:53:45 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,8 @@ typedef struct		s_resolution
 
 t_resolution		*ft_generate_struct_resolve(const t_lst *tetris_lst);
 char				**ft_generate_square(size_t side_length);
+t_bool				ft_is_placable(t_resolution *array,
+									int x, int y, t_tetrimino *piece);
+void				ft_add_tetri(char **tab, int x, int y, t_tetrimino *piece);
+void				ft_empty_tab(char **tab, int x, int y, t_tetrimino *piece);
 #endif

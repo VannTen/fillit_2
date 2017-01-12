@@ -6,13 +6,14 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:09:47 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/08 15:43:45 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 15:53:59 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "solve_array.h"
 #include "fillit.h"
 
-void	ft_add_tetri(char **tab, t_tetrimino *piece, int x, int y)
+void	ft_add_tetri(char **tab, int x, int y, t_tetrimino *piece)
 {
 	unsigned int	index;
 	t_rel_position	*coord;

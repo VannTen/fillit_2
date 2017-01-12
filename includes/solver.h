@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:19:52 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/08 16:13:22 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/12 15:53:50 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,6 @@
 
 static t_bool		ft_try_piece(t_resolution *array,
 									int x, int y, const t_lst *tetri);
-t_bool				ft_is_placable(t_resolution *array,
-									int x, int y, t_tetrimino *piece);
 static t_bool		ft_try_every_position(t_resolution *array,
 											const t_lst *tetri);
-void				ft_add_tetri(t_resolution *array,
-									int x, int y, t_tetrimino *piece);
-void				ft_empty_tab(char **tab, int x, int y, t_tetrimino *piece);
 #endif
