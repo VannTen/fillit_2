@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 17:09:11 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/12 15:44:19 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 17:38:22 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static t_bool	ft_try_every_position(t_resolution *array,
 	int	index_x;
 	int	index_y;
 
+	if (tetris_lst == NULL)
+		return (TRUE);
 	index_x = 0;
 	index_y = 0;
 	while (index_y < array->size_tab)
 	{
 		if (ft_try_piece(array, index_x, index_y, tetris_lst))
 			return (TRUE);
-		ft_empty_tab(array->tab, index_x, index_y,
-					(t_tetrimino*)tetris_lst->content);
 		if (index_x < array->size_tab)
 		{
 			index_x = 0;
@@ -46,7 +46,10 @@ static t_bool	ft_try_piece(t_resolution *array, int x, int y,
 	if (!ft_is_placable(array, x, y, (t_tetrimino*)tetri->content))
 		return (FALSE);
 	ft_add_tetri(array->tab, x, y, (t_tetrimino*)tetri->content);
-	return (ft_try_every_position(array, tetri->next));
+	if (ft_try_every_position(array, tetri->next))
+		return (TRUE);
+	ft_empty_tab(array->tab, x, y, (t_tetrimino*)tetri->content);
+	return (FALSE);
 }
 
 char			**ft_solver(const t_lst *tetris_lst)
