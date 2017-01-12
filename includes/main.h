@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 17:43:04 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/08 18:00:57 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/12 16:28:29 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,6 @@
 
 t_lst	*ft_parser(const char *filename);
 char	**ft_solver(t_lst *tetris_lst);
-void	ft_display_file(char **array);
+void	ft_display_string_array(char **array);
 
 #endif

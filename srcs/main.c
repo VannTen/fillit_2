@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 16:58:52 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/08 17:57:15 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/12 16:28:03 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		main(int argc, char **argv)
 	}
 	stock = ft_parser(argv[1]);
 	square = ft_solver(stock);
-	ft_display_file(square);
+	ft_display_string_array(square);
 	ft_free_string_array(&square);
 	return (0);
 }
