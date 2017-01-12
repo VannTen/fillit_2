@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:45:38 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/12 18:08:32 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 19:29:23 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_bool	ft_is_not_overlap(char **tab, int x, int y, t_tetrimino *piece)
 ** This function test when we place piece it does not exceed bounds of array.
 */
 
-t_bool	ft_out_of_bound(int size_tab, int y, int x, t_tetrimino *piece)
+t_bool	ft_out_of_bound(int size_tab, int x, int y, t_tetrimino *piece)
 {
 	t_offset	*offset;
 
