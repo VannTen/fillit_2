@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:45:38 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/08 16:13:20 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/12 17:14:20 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_bool	ft_is_not_overlap(char **tab, int x, int y, t_tetrimino *piece)
 	coord = piece->relative_coordinates;
 	while (index < 3)
 	{
-		if (tab[x + coord->x][y + coord->y] != '\0')
+		if (tab[y + coord->y][x + coord->x] != '\0')
 			return (FALSE);
 		coord++;
 		index++;
