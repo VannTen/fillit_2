@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:45:38 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/12 17:14:20 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 18:08:32 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ t_bool	ft_is_not_overlap(char **tab, int x, int y, t_tetrimino *piece)
 	t_rel_position	*coord;
 
 	index = 0;
-	if (tab[x][y] != '\0')
+	if (tab[x][y] != '.')
 		return (FALSE);
 	coord = piece->relative_coordinates;
 	while (index < 3)
 	{
-		if (tab[y + coord->y][x + coord->x] != '\0')
+		if (tab[y + coord->y][x + coord->x] != '.')
 			return (FALSE);
 		coord++;
 		index++;
@@ -62,6 +62,6 @@ t_bool	ft_out_of_bound(int size_tab, int y, int x, t_tetrimino *piece)
 
 t_bool	ft_is_placable(t_resolution *array, int x, int y, t_tetrimino *piece)
 {
-	return (ft_is_not_overlap(array->tab, x, y, piece) &&
-			ft_out_of_bound(array->size_tab, x, y, piece));
+	return 	((ft_out_of_bound(array->size_tab, x, y, piece))
+			&& (ft_is_not_overlap(array->tab, x, y, piece)));
 }

@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:37:45 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/08 12:03:07 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/12 18:11:15 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ char			**ft_generate_square(size_t side_length)
 
 	index = 0;
 	square = (char**)malloc(sizeof(char*) * side_length + 1);
-	while (index < side_length)
+	while (index <= side_length)
 	{
-		square[index] = ft_strnew(side_length);
+		square[index] = ft_strnew_char(side_length, '.');
 		if (square[index] == NULL)
 			return (ft_free_string_array(&square));
 		index++;
