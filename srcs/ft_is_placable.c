@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:45:38 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/13 16:23:50 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/13 16:30:14 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ t_bool	ft_out_of_bound(int size_tab, int x, int y, t_tetrimino *piece)
 
 t_bool	ft_is_placable(t_resolution *array, int x, int y, t_tetrimino *piece)
 {
-	return 	((ft_out_of_bound(array->size_tab, x, y, piece))
+	return ((ft_out_of_bound(array->size_tab, x, y, piece))
 			&& (ft_is_not_overlap(array->tab, x, y, piece)));
 }
