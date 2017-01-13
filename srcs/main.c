@@ -6,12 +6,13 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 16:58:52 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/12 16:28:03 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/13 18:59:01 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 #include "libft.h"
+#include <string.h>
 
 int		main(int argc, char **argv)
 {
@@ -23,7 +24,11 @@ int		main(int argc, char **argv)
 		ft_putstr("Usage : fillit + filename.");
 		return (1);
 	}
-	stock = ft_parser(argv[1]);
+	if ((stock = ft_parser(argv[1])) == NULL)
+	{
+		ft_putstr("error\n");
+		return (0);
+	}
 	square = ft_solver(stock);
 	ft_display_string_array(square);
 	ft_free_string_array(&square);
