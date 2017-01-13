@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:33:14 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/12 17:52:25 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/13 16:24:30 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_empty_tab(char **tab, int x, int y, t_tetrimino *piece)
 	t_rel_position	*coord;
 
 	index = 0;
-	tab[x][y] = '.';
+	tab[y][x] = '.';
 	coord = piece->relative_coordinates;
 	while (index < 3)
 	{
