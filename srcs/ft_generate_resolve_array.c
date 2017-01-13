@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calculate_array_size.c                          :+:      :+:    :+:   */
+/*   ft_generate_resolve_array.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:37:45 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/12 21:51:55 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/13 13:16:04 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char			**ft_generate_square(size_t side_length)
 	size_t	index;
 
 	index = 0;
-	square = (char**)malloc(sizeof(char*) * side_length + 1);
-	while (index <= side_length)
+	square = (char**)malloc(sizeof(char*) * (side_length + 1));
+	while (index < side_length)
 	{
 		square[index] = ft_strnew_char(side_length, '.');
 		if (square[index] == NULL)
