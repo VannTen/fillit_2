@@ -6,13 +6,18 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/21 18:40:03 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/12 14:16:46 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/14 16:46:12 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_reader.h"
 #include "libft.h"
 #include <stdlib.h>
+
+/*
+** This function read the piece one by one, check if it's good to be added
+** in the list if it's not we destroy the link and free the list.
+*/
 
 t_lst	*ft_file_reader(const int fd)
 {
@@ -38,5 +43,5 @@ t_lst	*ft_file_reader(const int fd)
 		if (separator != '\n' && oct_read != 0)
 			return ((t_lst*)f_fifo_destroy(&fifo, &ft_gen_strdel));
 	}
-	return (fifo->begin_lst);
+	return (f_fifo_extract(&fifo));
 }
