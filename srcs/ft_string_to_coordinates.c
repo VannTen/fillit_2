@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 12:18:39 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/23 18:30:50 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 16:33:45 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "fillit.h"
 #include "libft.h"
 
-static t_rel_position	*ft_string_to_coordinates(char *str)
+static t_rel_position	*ft_string_to_coordinates(const char *str)
 {
 	char			**tab_lines;
 	t_rel_position	*rel_positions;

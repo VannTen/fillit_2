@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/27 15:25:52 by mgautier          #+#    #+#             */
-/*   Updated: 2016/12/27 16:42:11 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 16:26:50 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include "libft.h"
 #include <fcntl.h>
 #include <stdlib.h>
+
+/*
+** Open the file, passe it to the reader,
+** pass the pieces list to the valider,
+** then successively transform into coord, then tetrimino
+**
+** Then, pass return that tetrimino list
+*/
 
 t_lst	*ft_parser(const char *file_name)
 {

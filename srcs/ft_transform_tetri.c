@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 17:50:42 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/06 16:13:41 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 17:08:50 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,16 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static t_offset	*ft_offset(const t_rel_position *coord)
+/*
+** ft_trans_tetri transform one element of list containing a t_rel_position
+** array of 3 struct into a element containing a t_tetrimino structure,
+** by calculating the offset (aka, the biggest difference in the three
+** points to the origin, for horizontal and vertical axis (vertical axis does
+** not need a negative offset, since the first point will always be the topmost
+** , but not necessary the leftmost.
+*/
+
+static t_offset		*ft_offset(const t_rel_position *coord)
 {
 	t_offset	*offset;
 	size_t		index;
@@ -40,8 +49,8 @@ static t_offset	*ft_offset(const t_rel_position *coord)
 	return (offset);
 }
 
-t_tetrimino		*ft_transform_in_tetri(t_rel_position *coord,
-		const unsigned int index)
+static t_tetrimino *ft_transform_in_tetri(t_rel_position *coord,
+											const unsigned int index)
 {
 	t_tetrimino	*new;
 
@@ -57,7 +66,7 @@ t_tetrimino		*ft_transform_in_tetri(t_rel_position *coord,
 	return (new);
 }
 
-t_lst			*ft_trans_tetri(t_lst *piece, unsigned int index)
+t_lst				*ft_trans_tetri(t_lst *piece, const unsigned int index)
 {
 	t_lst	*new_link;
 
