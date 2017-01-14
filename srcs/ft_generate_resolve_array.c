@@ -6,12 +6,19 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:37:45 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/13 13:16:04 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 15:56:46 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "solve_array.h"
 #include "libft.h"
+
+/*
+** The struct t_resolution need to contain two things : an two-dimensions array
+** of char, used to resolve the problem, and its size.
+** The size is initially calculated by taking the root square of
+** (number of tetris * 4), rounded up.
+*/
 
 static size_t	ft_calculate_array_size(const t_lst *tetris_lst)
 {
@@ -57,4 +64,21 @@ t_resolution	*ft_generate_struct_resolve(const t_lst *tetris_lst)
 		}
 	}
 	return (resolve);
+}
+
+char			**ft_extract_array(t_resolution** destroy_this)
+{
+	t_resolution	*to_destroy;
+	char			**to_return;
+
+	to_return = NULL;
+	if (destroy_this != NULL)
+	{
+		to_destroy = *destroy_this;
+		to_return = to_destroy->tab;
+		to_destroy->size_tab = 0;
+		free(to_destroy);
+		*destroy_this = NULL;
+	}
+	return (to_return);
 }

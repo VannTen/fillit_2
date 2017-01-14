@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 17:09:11 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/14 15:30:15 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 15:57:41 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,5 @@ char			**ft_solver(const t_lst *tetris_lst)
 		solve_tab->size_tab++;
 		solve_tab->tab = ft_generate_square(solve_tab->size_tab);
 	}
-	return (solve_tab->tab);
+	return (ft_extract_array(&solve_tab));
 }
