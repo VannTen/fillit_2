@@ -6,7 +6,7 @@
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 13:32:34 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/14 17:58:05 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/14 18:43:47 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #define BUF_SIZE 20
 
 /*
-** This function allocate a buf_size, read the file descriptor received 
+** This function allocate a buf_size, read the file descriptor received
 ** in parameter and put it in buf.
 */
 
