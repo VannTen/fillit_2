@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 14:37:45 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/14 15:56:46 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 17:54:54 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ t_resolution	*ft_generate_struct_resolve(const t_lst *tetris_lst)
 	return (resolve);
 }
 
-char			**ft_extract_array(t_resolution** destroy_this)
+char			**ft_extract_array(t_resolution **destroy_this)
 {
 	t_resolution	*to_destroy;
 	char			**to_return;

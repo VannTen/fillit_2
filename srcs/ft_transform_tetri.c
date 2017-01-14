@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 17:50:42 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/14 17:08:50 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 17:55:26 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static t_offset		*ft_offset(const t_rel_position *coord)
 	return (offset);
 }
 
-static t_tetrimino *ft_transform_in_tetri(t_rel_position *coord,
+static t_tetrimino	*ft_transform_in_tetri(t_rel_position *coord,
 											const unsigned int index)
 {
 	t_tetrimino	*new;
