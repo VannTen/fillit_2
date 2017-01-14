@@ -6,7 +6,7 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/06 16:45:38 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/13 16:30:14 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 15:22:26 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "solve_array.h"
 
 /*
-** This function test if we place piece it's not overlap the other piece.
+** This function test if the piece does not overlap another piece.
 */
 
 t_bool	ft_is_not_overlap(char **tab, int x, int y, t_tetrimino *piece)
@@ -38,7 +38,7 @@ t_bool	ft_is_not_overlap(char **tab, int x, int y, t_tetrimino *piece)
 }
 
 /*
-** This function test when we place piece it does not exceed bounds of array.
+** This function test if the piece does not go out of the array bounds.
 */
 
 t_bool	ft_out_of_bound(int size_tab, int x, int y, t_tetrimino *piece)
@@ -56,8 +56,7 @@ t_bool	ft_out_of_bound(int size_tab, int x, int y, t_tetrimino *piece)
 }
 
 /*
-** This function use the function on the top for make sure the piece is
-** placable in the array.
+** Combines the two test functions.
 */
 
 t_bool	ft_is_placable(t_resolution *array, int x, int y, t_tetrimino *piece)

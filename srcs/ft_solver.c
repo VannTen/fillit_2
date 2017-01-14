@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/05 17:09:11 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/13 14:45:22 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 15:30:15 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 #include "solve_array.h"
 #include "libft.h"
 #include <stdlib.h>
+
+/*
+** The solver
+**
+** The solver functions that way : it creates an array of size {square root of
+** number of pieces * 4, rouded up}.
+** Then it tries to place the first piece. If it does, it tries the next.
+** If one piece fails ot be place, the call stack go back to the previous,
+** which is considered to have failed to be placed (and is removed of the array)
+** Then, it is tried on the next case.
+**
+** If no succesfull placement is found for one size of array,
+** the solver free it, increment the size, allocate a new array and give it
+** another try. Until it finds a solution.
+*/
 
 static t_bool	ft_try_every_position(t_resolution *array,
 										const t_lst *tetris_lst)
@@ -48,7 +63,7 @@ static t_bool	ft_try_piece(t_resolution *array, int x, int y,
 	ft_add_tetri(array->tab, x, y, (t_tetrimino*)tetri->content);
 	if (ft_try_every_position(array, tetri->next))
 		return (TRUE);
-	ft_empty_tab(array->tab, x, y, (t_tetrimino*)tetri->content);
+	ft_remove_tetri(array->tab, x, y, (t_tetrimino*)tetri->content);
 	return (FALSE);
 }
 
