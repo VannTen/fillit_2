@@ -6,7 +6,7 @@
 /*   By: chbechet <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/16 13:32:34 by chbechet          #+#    #+#             */
-/*   Updated: 2016/12/22 14:04:10 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/14 17:58:05 by chbechet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include <sys/uio.h>
 #include <unistd.h>
 #define BUF_SIZE 20
+
+/*
+** This function allocate a buf_size, read the file descriptor received 
+** in parameter and put it in buf.
+*/
 
 char		*ft_piece_reader(const int fd)
 {
