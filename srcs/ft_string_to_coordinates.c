@@ -6,13 +6,19 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 12:18:39 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/14 16:33:45 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/14 18:09:53 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_relative_position.h"
 #include "fillit.h"
 #include "libft.h"
+
+/*
+** This function transform a element of list containing a raw tetrimino
+** (under the form of a string of 20 char) into a link containing a set of
+** 3 relatives positions.
+*/
 
 static t_rel_position	*ft_string_to_coordinates(const char *str)
 {
