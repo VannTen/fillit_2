@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 17:50:42 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/14 17:55:26 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/15 12:36:26 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,3 +76,14 @@ t_lst				*ft_trans_tetri(t_lst *piece, const unsigned int index)
 			ft_transform_in_tetri((t_rel_position*)piece->content, index);
 	return (new_link);
 }
+
+void				tetrimino_dtor(void *tetri)
+{
+	t_tetrimino	*tetrimino;
+
+	tetrimino = (t_tetrimino*)tetri;
+	free(tetrimino->relative_coordinates);
+	free(tetrimino->offset);
+	free(tetrimino);
+}
+

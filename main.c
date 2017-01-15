@@ -6,10 +6,11 @@
 /*   By: chbechet <chbechet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/08 16:58:52 by chbechet          #+#    #+#             */
-/*   Updated: 2017/01/13 18:59:01 by chbechet         ###   ########.fr       */
+/*   Updated: 2017/01/15 12:37:44 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_transform.h"
 #include "main.h"
 #include "libft.h"
 #include <string.h>
@@ -32,5 +33,6 @@ int		main(int argc, char **argv)
 	square = ft_solver(stock);
 	ft_display_string_array(square);
 	ft_free_string_array(&square);
+	f_lstdel(&stock, &tetrimino_dtor);
 	return (0);
 }
