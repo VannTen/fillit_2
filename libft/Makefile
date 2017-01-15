@@ -1,247 +1,90 @@
-#* ************************************************************************** *#
-#*                                                                            *#
-#*                                                        :::      ::::::::   *#
-#*   Makefile                                           :+:      :+:    :+:   *#
-#*                                                    +:+ +:+         +:+     *#
-#*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        *#
-#*                                                +#+#+#+#+#+   +#+           *#
-#*   Created: 2016/11/04 13:12:11 by mgautier          #+#    #+#             *#
-#*   Updated: 2017/01/14 17:47:42 by mgautier         ###   ########.fr       *#
-#*                                                                            *#
-#* ************************************************************************** *#
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2016/12/19 07:58:53 by mgautier          #+#    #+#              #
+#*   Updated: 2017/01/15 14:16:31 by mgautier         ###   ########.fr       *#
+#                                                                              #
+# **************************************************************************** #
 
-$(info Begin Makefile parsing...)
-##
-## Externals programms
-##
-CC = gcc
+# Define target and sources
+
+TARGET := libft.a
+
+# To exclude some files from the compilation (to gain some time on the
+# moulinette timeout, for example... ;p) uncomment the line defining the set
+# of files to exclude to NOTHING.
+
+#LIB_LST = $(NOTHING)
+#LIB_LIST = $(NOTHING)
+#LIB_FIFO = $(NOTHING)
+#LIB_STR = $(NOTHING)
+#LIB_DISPLAY = $(NOTHING)
+#LIB_MEM = $(NOTHING)
+#LIB_CONVERT = $(NOTHING)
+#LIB_BOOLEAN = $(NOTHING)
+#LIB_MATH = $(NOTHING)
+#LIB_MISCELLANEOUS = $(NOTHING)
+
+NAME = libft.a
+LIB_LST ?=\
+	f_lstpush.c f_lstnew.c f_lst_every_valid.c f_lstmap.c\
+	f_lstmapi.c f_lst_len.c f_lstsearch.c f_lstremoveif_one.c f_add_end_lst.c\
+	f_lstiter.c f_strljoin.c f_strsplit_lst.c f_lstdelone.c f_lstdel.c 
+LIB_LIST ?=\
+	ft_lstdel.c ft_lstdelone.c ft_lstiter.c ft_lstmap.c ft_lstnew.c \
+	f_lstpop.c  ft_lstpushdata.c ft_memalloc.c ft_memset.c \
+	ft_lstadd.c ft_lstcheck.c ft_add_end_list.c 
+LIB_FIFO ?=\
+	f_fifo_add.c f_fifo_create.c f_fifo_take.c f_fifo_destroy.c f_fifo_extract.c
+LIB_STR ?=\
+	ft_strcat.c ft_strchr.c ft_strclr.c \
+	ft_strcmp.c ft_strcpy.c ft_strdel.c ft_strdup.c ft_strequ.c ft_striter.c \
+	ft_striteri.c ft_strjoin.c ft_strlcat.c ft_strlen.c\
+	ft_strmap.c ft_strmapi.c\
+	ft_strncat.c ft_strncmp.c ft_strncpy.c ft_strnequ.c ft_strnstr.c \
+	ft_strrchr.c ft_strsplit.c ft_strstr.c ft_strsub.c ft_strtrim.c\
+	ft_gen_strdel.c ft_strnew_char.c ft_strnew.c ft_free_string_array.c
+LIB_DISPLAY ?=\
+	ft_putchar.c ft_putchar_fd.c ft_putendl.c ft_putendl_fd.c ft_putnbr.c \
+	ft_putnbr_fd.c ft_putstr.c ft_putstr_fd.c 
+LIB_MEM ?=\
+	ft_memccpy.c ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memdel.c ft_memmove.c \
+	ft_bzero.c 
+LIB_CONVERT ?=\
+	ft_atoi.c ft_itoa.c ft_tolower.c ft_toupper.c 
+LIB_BOOLEAN ?=\
+	ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c
+LIB_MATH ?=\
+	ft_int_square_root.c ft_square_root_round_up.c
+LIB_MISCELLANEOUS ?=\
+	database.c no_destroy.c
+SRC := $(LIB_LST) $(LIB_LIST) $(LIB_FIFO)\
+	$(LIB_STR) $(LIB_DISPLAY) $(LIB_MEM)\
+	$(LIB_CONVERT) $(LIB_BOOLEAN) $(LIB_MATH)\
+	$(LIB_MISCELLANEOUS)
+
+ARCH_MEMBER := $(NAME)($(SRC:.c=.o))
+
 AR = ar
-MKDIR = mkdir
-RMDIR = rm -Rf
-SED = sed
-LN = ln -f
-TOUCH = touch
+ARFLAGS = -rc
 RANLIB = ranlib
+CFLAGS := -Werror -Wextra -Wall
 
-##
-## Project specific variable
-##
+.PHONY: all clean fclean re
 
-FILE_CHAR_RANGE := a-z0-9._
-
-# Extern variables (depending on build environnement)
-
-SYSTEM = $(shell uname)
-
-##
-## Externals programms flags
-##
-
-# Compiler flags
-ERROR_FLAGS := -Wall -Wextra -Werror -ansi -pedantic-errors
-DEBUG_FLAGS := -g -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer
-PROFILE_FLAGS :=
-CFLAGS += $(ERROR_FLAGS) $(DEBUG_FLAGS) $(PROFILE_FLAGS)
-
-CPPFLAGS += $(INCLUDE) $(foreach INC_LIB,$(LIB_INCLUDES),-iquote$(INC_LIB))
-DEPFLAGS = -MT $@ -MP -MMD -MF $(word 2,$^).tmp
-
-# Linker flags
-
-LDFLAGS += $(DEBUG_FLAGS) $(PROFILE_FLAGS)
-
-# Archive maintainer flags
-ARFLAGS = rc
-ifeq ($(SYSTEM),Linux)
- ARFLAGS += -U
-endif
-
-##
-## Build tools
-##
-
-# Object file compilation and dependency generation
-# (as a side effect, see DEPFLAGS)
-COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-
-# Post processing on depencency file (done after compilation) for relative path.
-POSTCOMPILE = $(SED)\
--e 's|$(OBJ_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.o\)|$$(OBJ_LOCAL_$(DIR))\1|g'\
--e 's|$(SRC_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.c\)|$$(SRC_LOCAL_$(DIR))\1|g'\
--e 's|$(INC_LOCAL_$(DIR))\([$(FILE_CHAR_RANGE)]*\.h\)|$$(INC_LOCAL_$(DIR))\1|g'\
-$(foreach LIB,$($(DIR)_LIBS),-e \
-'s|$($(LIB)_PATH)\([$(FILE_CHAR_RANGE)]*\.h\)|$$($(LIB)_PATH)\1|g')\
-$(word 2,$^).tmp > $(word 2,$^)
-
-# Add objects files to archive (static library)
-define LINK_STATIC_LIB
-$(AR) $(ARFLAGS) $@ $?
-$(RANLIB) $@
-endef
-# Linker
-LINK_EXE = $(CC) $(LDFLAGS) $^ -o $@ $(LDFLAGS_TGT)
-
-
-##
-## Macro variables
-##
-
-# These variables are used to obtain the .o and .dep files list
-# for each level of the projet, by using the current value of SRC.
-
-OBJ = $(patsubst %.c,$(OBJ_LOCAL_$(DIR))%.o,$(SRC))
-DEP = $(patsubst %.c,$(DEP_LOCAL_$(DIR))%.dep,$(SRC))
-
-# Functions for handling directories and inclusion of submakefiles
-
-define INCLUDE_SUBDIRS
-include $(DIR)$(SUBDIR)Rules.mk
-endef
-
-define TARGET_ERROR
-$$(error $$(DIR) : No target if indicated for that directory))
-endef
-
-define ADD_SLASH
-$1_LOCAL_$(DIR) := $(if $($1_DIR),$(DIR)$($1_DIR)/,$(DIR))
-endef
-
-# Assure a clean state before computing rules in a subdir
-EMPTY_SRCS.MK := TARGET \
- SRC \
- LIBRARIES \
- OBJECTS \
- ELSE \
- SRC_DIR \
- INC_DIR \
- OBJ_DIR \
- DEP_DIR \
- TEST_DIR \
- SUBDIRS 
-
-##
-## Build rules
-##
-
-# Compilation rule for objects files (.o) from C source files (.c)
-# Generate dependencies files (.dep) as a side effet
-# That macro is used with eval in each subdirs to generate a static pattern rule
-# for the objects files in that directory
-
-%.o: %.c
-
-define	STATIC_OBJ_RULE
-$(OBJ_$(DIR)): $(OBJ_LOCAL_$(DIR))%.o: $(SRC_LOCAL_$(DIR))%.c\
-$(DEP_LOCAL_$(DIR))%.dep | $(OBJ_LOCAL_$(DIR)) $(DEP_LOCAL_$(DIR))
-	$(QUIET) $$(COMPILE)
-	$(QUIET) $$(POSTCOMPILE)
-	$(QUIET) $(RM) $$(word 2,$$^).tmp
-	$(QUIET) $(TOUCH) $$@
-endef
-
-%.dep: ;
-
-.PRECIOUS: %.dep
-
-# Rules to generate the needed Makefiles in the subdirectories 
-# and update them if necessary.
-
-%/Rules.mk: Rules.mk | %/Makefile
-	+$(QUIET) $(LN) $< $@
-%/Makefile: Makefile
-	+$(QUIET) $(LN) $< $@
-
-.PRECIOUS: %/Makefile
-
-##
-## Collecting variables (filled during the parsing of Rules.mk and sub-Rules.mk)
-##
-
-# These three variables collect respectively : 
-# all object files, target files and dependencies files, 
-# and submakefiles (that can be generated).
-
-CLEAN :=
-FCLEAN :=
-MKCLEAN :=
-
-# Initializes as simple variables collector for, respectively,
-# library path (used for compilation rules)
-# directories that may not exist at build time and are required 
-# (objects directories and dependencies directories)
-# and dependencies files.
-
-LIBPATH_INC :=
-GENERATED_SUBDIRS :=
-DEP_FILES :=
-
-##
-## Inclusion of subdirectories Makefiles (Rules.mk)
-##
-
-# Initialize the DIR variable, which tracks the directory 
-# whose make is parsing the Rules.mk
-# One option could be to initializes it with the value of 
-# $(CURDIR) or $(shell pwd), to get the absolute path.
-# However, that could cause trouble to produce a separate build tree.
-
-DIR := 
-
-# Includes the local Rules.mk, 
-# which will include all the subdirectories Rules.mk
-# (It could eventually include itself, since the DIR variable is independant
-# from the actual location # of Rules.mk ; to think about)
-
-include Rules.mk
-
-# Include all dependency files collected from sub makfiles
-
-include $(DEP_FILES)
-
-# After having included all sub-Rules.mk, define the rules
-# to create new directories if needed.
-# (the directories are order-only prerequisites on build rules)
-
-$(GENERATED_SUBDIRS):
-	+$(MKDIR) $@
-
-##
-## Standard rules for users
-##
-
-# $(TARGET_$(DIR) will expand in $(TARGET_), since DIR will recover 
-# its initial value and the end of the parsing of the Rules.mk files
-# (see the standard entry and exit gates on Rules.mk)
-
-# Because the Norm said so.................
-
-NAME = $(TARGET_$(DIR))
 all: $(NAME)
 
-# Make sure the default target is always all
-.DEFAULT_GOAL:= all
-
 clean:
-	$(RM) $(CLEAN)
-	
-mkclean:
-	$(RM) $(MKCLEAN)
+	$(RM) $(OBJ)
 
-fclean: clean
-	$(RM) $(FCLEAN)
-
-dirclean:
-	$(RMDIR) $(GENERATED_SUBDIRS)
-	
-mrproper: fclean mkclean
+fclean: clean fclean
+	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: debug all clean fclean mkclean dirclean re
-
-# This is for be sure that the top level directory reecipes do not count
-# on the last value of DIR (the directory from where make is invoked)
-
-DIR := THIS_IS_A_BUG	
-
-$(info End of Makefile parsing)
+$(NAME): $(ARCH_MEMBER)
+	$(RANLIB) $@
