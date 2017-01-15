@@ -6,7 +6,7 @@
 #    By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/19 07:58:53 by mgautier          #+#    #+#              #
-#*   Updated: 2017/01/15 14:06:22 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/15 14:26:33 by mgautier         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ LDFLAGS := -L$(LIB)
 LDLIBS := $(patsubst lib%,-l%,$(LIB))
 
 .PHONY: all clean fclean re $(LIB)
-all: $(NAME)
+.NOTPARALLEL:
+all: $(LIB) $(NAME)
 
 clean: $(LIB)clean
 	$(RM) $(OBJ)
@@ -35,7 +36,7 @@ fclean: clean $(LIB)fclean
 
 re: fclean all
 
-$(NAME): $(OBJ) $(LIB)
+$(NAME): $(OBJ) 
 	$(CC) $(OBJ) $(LDFLAGS) $(LDLIBS) -o $@
 
 $(LIB) $(LIB)fclean $(LIB)clean:
