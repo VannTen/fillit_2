@@ -6,7 +6,7 @@
 /*   By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 17:50:42 by mgautier          #+#    #+#             */
-/*   Updated: 2017/01/15 12:36:26 by mgautier         ###   ########.fr       */
+/*   Updated: 2017/01/15 12:41:20 by mgautier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,3 @@ void				tetrimino_dtor(void *tetri)
 	free(tetrimino->offset);
 	free(tetrimino);
 }
-
