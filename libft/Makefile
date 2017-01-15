@@ -6,7 +6,7 @@
 #    By: mgautier <mgautier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/12/19 07:58:53 by mgautier          #+#    #+#              #
-#*   Updated: 2017/01/15 14:16:31 by mgautier         ###   ########.fr       *#
+#*   Updated: 2017/01/15 14:18:36 by mgautier         ###   ########.fr       *#
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ all: $(NAME)
 clean:
 	$(RM) $(OBJ)
 
-fclean: clean fclean
+fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
